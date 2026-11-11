@@ -9,7 +9,7 @@ Sito statico di Giordano Margotti, pubblicato con GitHub Pages dal ramo `main` (
 4. Commit su `main` e push; ripubblica anche la pagina privata su Claude pubblicando `build/pensatoio-claude.html` come `index.html` dell'artifact.
 
 ## Regole
-- Testata: solo GIORDANO MARGOTTI (su due righe) e "Think slow, grow wise.". Niente scritte superflue, contatori o ricerca. Titolo del sito: "Giordano Margotti · Pensatoio".
+- Testata: solo GIORDANO MARGOTTI (su una riga) e "Think slow, grow wise.". Niente scritte superflue, contatori o ricerca. Titolo del sito: "Giordano Margotti · Pensatoio".
 - Menu Topic (argomenti, ciascuno con i suoi temi) e Insight (fonti per tipo). Pagina vuota finché non si sceglie; se la scelta porta a una sola scheda l'articolo si apre subito, altrimenti elenco con "Leggi →".
 - Articoli del blog e del sito: testo integrale e verbatim (refusi compresi), senza riordino né commenti; niente link all'origine nelle schede (il campo `origini` resta nei dati).
 - Immagini degli articoli ridisegnate nello stile della pagina, nel punto del testo dove stavano; immagine originale (data URI) solo se mancano i dati per ridisegnarla. Se l'autore chiede "immagini coerenti": schemi tra un paragrafo e l'altro, senza toccare il testo.
