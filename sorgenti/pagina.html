@@ -1,0 +1,2209 @@
+<title>Pensatoio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&display=swap">
+<style id="stile">
+/* Layout: quaderno con margine. Testata su carta a quadretti; date e dati della scheda nella colonna di margine, testo nella colonna di lettura. */
+:root {
+  --paper: #ffffff;
+  --ink: #15181d;
+  --muted: #5d6571;
+  --rule: #e1e5eb;
+  --grid: #e7ebf1;
+  --accent: #1f43a3;
+  --wash: #edf1fb;
+  --panel: #ffffff;
+  --shadow: 0 14px 34px rgba(16, 24, 40, .13), 0 2px 6px rgba(16, 24, 40, .06);
+  --c1: #2a78d6;
+  --c2: #eb6834;
+  --c3: #1baf7a;
+  --c4: #eda100;
+  --c5: #e87ba4;
+  --c6: #008300;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-text: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --measure: 66ch;
+  --margin-col: 196px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1217;
+    --ink: #e6e9ee;
+    --muted: #99a1ad;
+    --rule: #262c35;
+    --grid: #181d25;
+    --accent: #93acf6;
+    --wash: #19223c;
+    --panel: #151920;
+    --shadow: 0 14px 34px rgba(0, 0, 0, .55), 0 2px 6px rgba(0, 0, 0, .4);
+    --c1: #3987e5;
+    --c2: #d95926;
+    --c3: #199e70;
+    --c4: #c98500;
+    --c5: #d55181;
+    --c6: #008300;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1217;
+  --ink: #e6e9ee;
+  --muted: #99a1ad;
+  --rule: #262c35;
+  --grid: #181d25;
+  --accent: #93acf6;
+  --wash: #19223c;
+  --panel: #151920;
+  --shadow: 0 14px 34px rgba(0, 0, 0, .55), 0 2px 6px rgba(0, 0, 0, .4);
+  --c1: #3987e5;
+  --c2: #d95926;
+  --c3: #199e70;
+  --c4: #c98500;
+  --c5: #d55181;
+  --c6: #008300;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  background: var(--paper);
+}
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+button { font: inherit; color: inherit; }
+::selection { background: var(--wash); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sr {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Testata */
+.masthead {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 20px 20px;
+  border-bottom: 1px solid var(--rule);
+}
+.masthead .wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  padding-block: clamp(36px, 8vw, 96px) clamp(32px, 6vw, 72px);
+}
+.kicker {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.4;
+  letter-spacing: .01em;
+  color: var(--muted);
+}
+.wordmark {
+  margin: 0;
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  /* La parola in Archivo largo misura circa 7,64 volte la dimensione del carattere: così sta sempre dentro i margini, anche sul telefono */
+  font-size: min(136px, 11.6vw);
+  font-size: min(136px, calc((100vw - max(16px, env(safe-area-inset-left, 0px)) - max(16px, env(safe-area-inset-right, 0px))) / 7.9));
+  line-height: .88;
+  letter-spacing: .005em;
+  text-transform: uppercase;
+}
+.motto {
+  margin: 0;
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-size: clamp(13px, 1.6vw, 17px);
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 14px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  cursor: pointer;
+}
+.btn:hover { background: var(--ink); color: var(--paper); }
+.btn:disabled { opacity: .55; cursor: progress; }
+.link-btn {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* Barra con i menu a tendina */
+.toolbar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 20;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+.toolbar .wrap {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-block: 10px;
+}
+.dd-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 10px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  cursor: pointer;
+}
+.dd-btn:hover { border-color: var(--muted); }
+.dd-btn[aria-expanded="true"] { border-color: var(--ink); }
+.dd-btn.on { color: var(--accent); border-color: var(--accent); }
+.chev { flex: none; transition: transform .15s ease; }
+.dd-btn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+.dd-panel {
+  position: absolute;
+  z-index: 30;
+  top: 100%;
+  left: max(16px, env(safe-area-inset-left, 0px));
+  right: max(16px, env(safe-area-inset-right, 0px));
+  max-height: min(70vh, 560px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px 0;
+  background: var(--panel);
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow);
+}
+@media (min-width: 760px) {
+  .dd { position: relative; }
+  .dd-panel { top: calc(100% + 6px); left: 0; right: auto; width: 420px; }
+}
+.dd-item, .dd-group {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 14px;
+  width: 100%;
+  padding: 9px 16px;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-display);
+}
+.dd-item { font-size: 15px; line-height: 1.35; color: var(--ink); }
+.dd-item .t { min-width: 0; }
+.dd-item .n {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.dd-item .sub {
+  grid-column: 1 / -1;
+  font-family: var(--font-text);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+.dd-sub { padding-left: 30px; font-size: 14px; }
+.dd-item:hover, .dd-group:hover,
+.dd-item:focus-visible, .dd-group:focus-visible { background: var(--wash); outline-offset: -2px; }
+.dd-item[aria-pressed="true"] .t { color: var(--accent); font-weight: 600; }
+.dd-group {
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.dd-group[aria-pressed="true"] { color: var(--accent); }
+
+/* Contenuto */
+#vista {
+  min-height: 50vh;
+  padding-block: clamp(22px, 4vw, 44px) clamp(48px, 7vw, 88px);
+}
+.sel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 2px solid var(--ink);
+}
+.sel-head h2 {
+  margin: 0;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.chiudi {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  margin-right: -8px;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.chiudi:hover { color: var(--ink); background: var(--wash); }
+.vuoto { margin: 0; padding-top: 20px; color: var(--muted); }
+
+.entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px 40px;
+  padding-block: 22px 26px;
+  border-top: 1px solid var(--rule);
+}
+.sel-head + .entry { border-top: 0; }
+.entry-margin {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.entry-margin:empty { display: none; }
+.entry-body { min-width: 0; max-width: var(--measure); display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.entry-title {
+  margin: 0;
+  font-family: var(--font-text);
+  font-size: clamp(21px, 2.4vw, 25px);
+  font-weight: 600;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+.entry[data-apri] { cursor: pointer; }
+.entry-link {
+  display: inline;
+  padding: 0;
+  font: inherit;
+  line-height: inherit;
+  text-align: left;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.entry:hover .entry-link { color: var(--accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.entry-more {
+  justify-self: start;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.entry-more span { display: inline-block; transition: transform .15s ease; }
+.entry:hover .entry-more span { transform: translateX(3px); }
+.entry-concept {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+@media (min-width: 900px) {
+  .entry { grid-template-columns: var(--margin-col) minmax(0, 1fr); }
+  .entry-margin { flex-direction: column; padding-top: 4px; }
+  .entry-margin:empty { display: block; }
+}
+
+/* Scheda */
+.scheda-top { margin-bottom: 18px; }
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.back:hover { color: var(--accent); }
+.scheda-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  padding-bottom: 22px;
+  border-bottom: 2px solid var(--ink);
+}
+.scheda-title {
+  margin: 0;
+  max-width: 28ch;
+  font-family: var(--font-text);
+  font-size: clamp(30px, 4.6vw, 48px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -.012em;
+  text-wrap: balance;
+}
+.scheda-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 26px 40px;
+  padding-top: 22px;
+}
+.scheda-meta dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 20px;
+}
+.scheda-meta dt {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.scheda-meta dd {
+  margin: 3px 0 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.scheda-meta .link-btn { font-family: var(--font-mono); font-size: 13px; text-align: left; }
+.scheda-body { min-width: 0; max-width: var(--measure); display: grid; grid-template-columns: minmax(0, 1fr); gap: 34px; }
+.block h3 {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.concept { margin: 0; font-size: clamp(19px, 2.2vw, 22px); line-height: 1.5; font-style: italic; }
+.points { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.points li { position: relative; padding-left: 24px; }
+.points li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: .62em;
+  width: 7px;
+  height: 7px;
+  border: 1.5px solid var(--accent);
+}
+.points.open li::before {
+  content: "?";
+  top: 0;
+  left: 1px;
+  width: auto;
+  height: auto;
+  border: 0;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--accent);
+}
+.sources { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+.sources li { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: baseline; }
+.src-type { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.src-main { display: grid; gap: 1px; min-width: 0; }
+.src-link {
+  justify-self: start;
+  padding: 0;
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.src-link:hover { color: var(--accent); text-decoration-color: currentColor; }
+.src-title { font-style: italic; line-height: 1.4; }
+.src-year { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.table-wrap { overflow-x: auto; border-top: 1px solid var(--ink); }
+.table-wrap table {
+  width: 100%;
+  min-width: 500px;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.table-wrap th, .table-wrap td {
+  padding: 9px 14px 9px 0;
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--rule);
+}
+.table-wrap th:last-child, .table-wrap td:last-child { padding-right: 0; }
+.table-wrap thead th {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.table-wrap tbody th { font-family: var(--font-display); font-size: 14px; font-weight: 600; }
+.table-wrap .num { text-align: right; }
+.table-note { margin: 10px 0 0; font-size: 14px; line-height: 1.5; font-style: italic; color: var(--muted); }
+.links { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+.links li { display: grid; gap: 2px; }
+.links a { font-weight: 600; text-decoration-color: var(--rule); }
+.links a:hover { text-decoration-color: currentColor; }
+.links .why { font-size: 16px; line-height: 1.5; color: var(--muted); }
+.pending { margin: 0; color: var(--muted); }
+@media (min-width: 900px) {
+  .scheda-head { padding-left: calc(var(--margin-col) + 40px); }
+  .scheda-grid { grid-template-columns: var(--margin-col) minmax(0, 1fr); }
+  .scheda-meta { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 84px); align-self: start; }
+  .scheda-meta dl { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Testo integrale degli articoli */
+.testo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; overflow-wrap: break-word; }
+.testo > * { margin: 0; min-width: 0; }
+.testo h1, .testo h2, .testo h3, .testo h4, .testo h5 {
+  margin-top: 18px;
+  font-family: var(--font-text);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.testo h4 { margin-top: 8px; font-size: 18px; }
+.testo h5 {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.testo ul, .testo ol { padding-left: 1.4em; display: grid; gap: 8px; }
+.testo ol li::marker { font-family: var(--font-mono); font-size: .82em; color: var(--muted); }
+.testo blockquote { padding-left: 16px; border-left: 2px solid var(--accent); font-size: 19px; line-height: 1.5; font-style: italic; color: var(--muted); }
+.testo sup { font-size: .68em; line-height: 0; }
+.testo aside {
+  display: grid;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.testo aside p { margin: 0; }
+.testo pre {
+  overflow-x: auto;
+  padding: 14px 16px;
+  background: var(--wash);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink);
+  -webkit-overflow-scrolling: touch;
+}
+.testo code { font-family: var(--font-mono); font-size: .9em; }
+.testo pre code { font-size: inherit; }
+.testo pre kbd { font: inherit; font-weight: 500; color: var(--ink); }
+.testo pre samp { font: inherit; color: var(--muted); }
+.testo pre i { font-style: normal; color: var(--muted); }
+@media (max-width: 420px) { .testo pre { padding: 12px; font-size: 11.5px; } }
+.testo table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; font-family: var(--font-mono); font-size: 13px; }
+.testo th, .testo td { padding: 6px 12px 6px 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--rule); }
+.testo a { overflow-wrap: anywhere; }
+.img-ph { display: block; padding: 10px 12px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); border: 1px dashed var(--rule); }
+
+/* Grafici */
+.grafico { margin: 6px 0 4px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.grafico figcaption {
+  font-family: var(--font-display);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.grafico figcaption b { font-weight: 600; color: var(--ink); }
+.g-plot { position: relative; min-width: 0; }
+.g-plot svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
+.g-plot:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.g-grid { stroke: var(--rule); stroke-width: 1; shape-rendering: crispEdges; }
+.g-tick { font-family: var(--font-mono); font-size: 11.5px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+.g-axis-title { font-family: var(--font-display); font-size: 12px; fill: var(--muted); }
+.g-panel-title { font-family: var(--font-display); font-size: 13px; font-weight: 600; fill: var(--ink); }
+.g-panel-unit { font-family: var(--font-display); font-size: 12px; font-weight: 400; fill: var(--muted); }
+.g-band { fill: var(--wash); }
+.g-line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.g-dot { fill: var(--accent); stroke: var(--paper); stroke-width: 2; }
+.g-err { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-linecap: round; opacity: .45; }
+.g-note { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: .02em; fill: var(--ink); }
+.g-cross { stroke: var(--muted); stroke-width: 1; shape-rendering: crispEdges; }
+.g-bar { fill: var(--accent); }
+.g-bar.on { opacity: .7; }
+.g-pt { stroke: var(--paper); stroke-width: 1.5; transition: opacity .15s ease; }
+.g-pt.dim { opacity: .13; }
+.g1 { fill: var(--c1); } .g2 { fill: var(--c2); } .g3 { fill: var(--c3); }
+.g4 { fill: var(--c4); } .g5 { fill: var(--c5); } .g6 { fill: var(--c6); }
+.g-hl { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.g-tip {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  display: grid;
+  gap: 1px;
+  padding: 7px 10px;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  background: var(--panel);
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow);
+}
+.g-tip strong { font-size: 14px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.g-tip span { font-size: 12px; color: var(--muted); }
+.testo .g-legend, .g-legend { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.g-legend button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 4px 9px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--ink);
+  background: none;
+  border: 1px solid var(--rule);
+  cursor: pointer;
+}
+.g-legend button:hover { border-color: var(--muted); }
+.g-legend button[aria-pressed="true"] { border-color: var(--ink); background: var(--wash); }
+.g-legend svg { flex: none; width: 12px; height: 12px; overflow: visible; }
+.g-info { margin: 0; min-height: 1.45em; font-family: var(--font-display); font-size: 13px; line-height: 1.45; color: var(--muted); }
+.g-quote { display: grid; gap: 8px; }
+.g-quote-lbls { display: flex; justify-content: space-between; gap: 16px; font-family: var(--font-display); font-size: 14px; color: var(--muted); }
+.g-quote-lbls span { display: inline-flex; align-items: center; gap: 7px; min-width: 0; }
+.g-quote-lbls b { font-weight: 600; color: var(--ink); }
+.g-quote-lbls i { flex: none; width: 10px; height: 10px; border-radius: 2px; }
+.g-split { display: flex; gap: 2px; height: 14px; border-radius: 4px; overflow: hidden; }
+.g-split span { display: block; min-width: 2px; }
+.s1 { background: var(--c1); } .s2 { background: var(--c2); } .s3 { background: var(--c3); }
+
+/* Diagrammi */
+.g-flusso svg { max-width: 420px; }
+.d-box { fill: var(--paper); stroke: var(--ink); stroke-width: 1; }
+.d-out { stroke: var(--accent); stroke-width: 1.5; }
+.d-dec { fill: var(--wash); stroke: var(--accent); stroke-width: 1.2; }
+.d-txt { font-family: var(--font-display); font-size: 11.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; fill: var(--ink); }
+.d-sml { font-family: var(--font-display); font-size: 12px; font-weight: 600; fill: var(--muted); }
+.d-line { fill: none; stroke: var(--muted); stroke-width: 1.3; }
+.d-head { fill: var(--muted); }
+.w-panel { fill: none; stroke: var(--rule); }
+.w-div { stroke: var(--rule); stroke-width: 1; }
+.w-price { fill: none; stroke: var(--muted); stroke-width: 1.3; stroke-linejoin: round; }
+.w-is { fill: var(--accent); }
+.w-oos { fill: var(--c2); }
+.w-run { stroke: var(--muted); stroke-width: 2; opacity: .35; }
+.w-lbl { font-family: var(--font-display); font-size: 12px; font-weight: 600; fill: var(--ink); }
+.w-note { font-family: var(--font-display); font-size: 11.5px; fill: var(--muted); }
+.w-span-is, .w-span-oos, .w-span-run { fill: none; stroke-width: 1.5; }
+.w-span-is { stroke: var(--accent); }
+.w-span-oos { stroke: var(--c2); }
+.w-span-run { stroke: var(--muted); }
+.g-bit0 { fill: var(--wash); }
+.g-bit1 { fill: var(--accent); }
+.g-bit1.mezzo { fill-opacity: .5; }
+.g-col-hl { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.x1 { fill: var(--accent); fill-opacity: .16; stroke: var(--accent); stroke-opacity: .45; }
+.x2 { fill: var(--paper); stroke: var(--rule); }
+.x-bit { font-family: var(--font-mono); font-size: 11px; fill: var(--ink); }
+.x-name { font-family: var(--font-display); font-size: 12px; font-weight: 600; fill: var(--ink); }
+.x-lbl { font-family: var(--font-display); font-size: 11.5px; fill: var(--muted); }
+.x-cut { stroke: var(--ink); stroke-width: 1.2; }
+.g-tab tfoot th, .g-tab tfoot td { font-weight: 600; border-top: 1px solid var(--ink); }
+.g-tab .grp th { text-align: left; border-bottom: 1px solid var(--rule); }
+.g-tab .grp th:empty { border-bottom: 0; }
+.g-img { display: block; width: 100%; height: auto; max-width: 600px; border: 1px solid var(--rule); background: #ffffff; }
+.table-wrap .g-tab.testuale { min-width: 0; }
+.g-tab.testuale td, .g-tab.testuale tbody th {
+  white-space: normal;
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+.g-tab.testuale tbody th { font-weight: 600; width: 26%; }
+/* Su schermi stretti ogni riga diventa un blocco: niente colonne tagliate né scorrimento laterale */
+@media (max-width: 600px) {
+  .g-tab.testuale, .g-tab.testuale tbody, .g-tab.testuale tr, .g-tab.testuale tbody th, .g-tab.testuale td { display: block; width: auto; }
+  .g-tab.testuale thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .g-tab.testuale tr { padding: 12px 0 14px; border-bottom: 1px solid var(--rule); }
+  .g-tab.testuale tbody th, .g-tab.testuale td { padding: 0; border: 0; }
+  .g-tab.testuale tbody th { font-size: 15px; }
+  .g-tab.testuale td::before {
+    content: attr(data-col);
+    display: block;
+    margin: 10px 0 2px;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+}
+.g-ciclo svg, .g-scala svg { max-width: 460px; }
+.c-num { fill: var(--accent); }
+.c-num-t { font-family: var(--font-display); font-size: 12px; font-weight: 700; fill: var(--paper); }
+.c-t1 { font-family: var(--font-display); font-size: 12.5px; font-weight: 600; fill: var(--ink); }
+.c-t2 { font-family: var(--font-display); font-size: 12px; fill: var(--muted); }
+.sc-step { fill: var(--accent); stroke: none; }
+.sc1 { fill-opacity: .12; } .sc2 { fill-opacity: .24; } .sc3 { fill-opacity: .38; }
+.sc-n { fill: var(--accent); font-size: 13px; }
+.s-axis { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+.s-hl { stroke: var(--muted); stroke-width: 1; }
+.f-band { fill: var(--wash); }
+.f-lbl { font-family: var(--font-display); font-size: 12px; font-weight: 600; fill: var(--ink); }
+.f-soglia { stroke: var(--muted); stroke-width: 1; shape-rendering: crispEdges; }
+.fl-h { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; fill: var(--muted); }
+.fl-box > rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1; }
+.fl-core > rect { fill: var(--wash); stroke: var(--accent); stroke-width: 1.5; }
+.fl-hl > rect, .rc-target > rect { stroke: var(--accent); stroke-width: 1.5; }
+.rc-off > rect { stroke: var(--rule); }
+.rc-off text { fill: var(--muted); }
+.rc-user > circle { fill: var(--wash); stroke: var(--muted); stroke-width: 1; }
+.rc-frame { fill: none; stroke: var(--rule); stroke-width: 1; }
+.rc-past { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+.rc-rec { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-dasharray: 5 4; }
+.rc-head { fill: var(--accent); }
+.rc-sim { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 2 3; }
+.rc-plus { font-family: var(--font-display); font-size: 22px; font-weight: 500; fill: var(--muted); }
+.g-raccomandazione svg { max-width: 640px; }
+
+/* Piede */
+.foot { border-top: 1px solid var(--rule); }
+.foot .wrap { display: flex; padding-block: 24px 32px; }
+
+.toast {
+  position: fixed;
+  z-index: 50;
+  left: 50%;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  max-width: calc(100% - 32px);
+  padding: 10px 16px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--paper);
+  background: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+</style>
+
+<div id="pensatoio">
+  <header class="masthead">
+    <div class="wrap">
+      <h1 class="wordmark">Pensatoio</h1>
+      <p class="motto">Think slow, grow wise.</p>
+    </div>
+  </header>
+
+  <nav class="toolbar" aria-label="Consulta l’archivio">
+    <div class="wrap">
+      <div class="dd">
+        <button class="dd-btn" id="btn-argomenti" type="button" aria-expanded="false" aria-controls="pnl-argomenti">
+          <span>Topic</span>
+          <svg class="chev" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </button>
+        <div class="dd-panel" id="pnl-argomenti" hidden></div>
+      </div>
+      <div class="dd">
+        <button class="dd-btn" id="btn-stimoli" type="button" aria-expanded="false" aria-controls="pnl-stimoli">
+          <span>Insight</span>
+          <svg class="chev" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </button>
+        <div class="dd-panel" id="pnl-stimoli" hidden></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="wrap" id="vista"></main>
+
+  <footer class="foot" id="piede" hidden>
+    <div class="wrap">
+      <button class="btn" id="scarica" type="button">
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        Scarica il file HTML
+      </button>
+    </div>
+  </footer>
+
+  <p id="annuncio" class="sr" role="status" aria-live="polite"></p>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</div>
+
+<!-- Archivio del Pensatoio: le schede stanno nel blocco JSON qui sotto. A parità di data conta l'ordine in cui compaiono. -->
+<script type="application/json" id="archivio">
+__ARCHIVIO__
+</script>
+
+<script id="app">
+(() => {
+  "use strict";
+  const $ = (sel, root = document) => root.querySelector(sel);
+
+  // Copia pulita della pagina, presa prima di disegnare: serve al file scaricabile.
+  const pristine = {
+    title: ($("title") || {}).outerHTML || "<title>Pensatoio</title>",
+    fonts: ($("#fonts") || {}).outerHTML || "",
+    style: $("#stile").outerHTML,
+    root: $("#pensatoio").outerHTML,
+    data: $("#archivio").outerHTML,
+    app: $("#app").outerHTML
+  };
+
+  const MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
+  const TIPI = [["Libro", "Libri"], ["Paper", "Paper"], ["Articolo", "Articoli"], ["Podcast", "Podcast"], ["Video", "Video"], ["Corso", "Corsi"], ["Conversazione", "Conversazioni"], ["Dati", "Dati"], ["Altro", "Altro"]];
+  const PARTICELLE = new Set(["de", "di", "da", "del", "della", "van", "von", "der", "le", "la", "du", "dos", "das"]);
+
+  const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const norm = (v) => String(v ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const dataBreve = (iso) => { const [y, m, d] = String(iso).split("-"); return y && m && d ? `${d}.${m}.${y}` : String(iso); };
+  const dataLunga = (iso) => { const [y, m, d] = String(iso).split("-").map(Number); return y && m && d ? `${d} ${MESI[m - 1]} ${y}` : String(iso); };
+  const keyOf = (k) => [k.tipo || "Altro", k.autore || "", k.titolo || ""].join("|");
+  const tipoIndex = (t) => { const i = TIPI.findIndex((x) => x[0] === t); return i < 0 ? TIPI.length : i; };
+  const tipoLabel = (t) => (TIPI.find((x) => x[0] === t) || [t, t])[1];
+  const surname = (full) => {
+    const parts = String(full).trim().split(/\s+/);
+    if (parts.length < 2) return parts[0] || "";
+    const last = parts[parts.length - 1];
+    const prev = parts[parts.length - 2];
+    return PARTICELLE.has(prev.toLowerCase()) ? `${prev} ${last}` : last;
+  };
+  const authorsOf = (k) => String(k.autore || "").split(",").map((a) => a.trim()).filter(Boolean);
+  const shortName = (k) => {
+    const a = authorsOf(k);
+    if (!a.length) return k.titolo || "";
+    if (a.length === 1) return surname(a[0]);
+    if (a.length === 2) return `${surname(a[0])} e ${surname(a[1])}`;
+    return `${surname(a[0])} e altri`;
+  };
+  const sortKey = (k) => norm(authorsOf(k).length ? surname(authorsOf(k)[0]) : k.titolo);
+  const bySource = (a, b) => tipoIndex(a.tipo || "Altro") - tipoIndex(b.tipo || "Altro") || sortKey(a).localeCompare(sortKey(b)) || (Number(a.anno) || 0) - (Number(b.anno) || 0);
+  const temaDi = (s) => (s.temi || [])[0] || "";
+
+  // Testo integrale degli articoli: lo si legge sempre attraverso un <template>, che non esegue nulla.
+  const testoPiano = (html) => {
+    const t = document.createElement("template");
+    t.innerHTML = String(html || "");
+    return (t.content.textContent || "").replace(/\s+/g, " ").trim();
+  };
+  const estratto = (s) => {
+    if (s.concetto) return s.concetto;
+    const t = s._piano || "";
+    return t.length > 240 ? t.slice(0, 240).replace(/\s+\S*$/, "") + "…" : t;
+  };
+  const pulisci = (html) => {
+    const t = document.createElement("template");
+    t.innerHTML = String(html || "");
+    t.content.querySelectorAll("script,style,iframe,object,embed,link,meta,form,input,button,select,textarea").forEach((n) => n.remove());
+    t.content.querySelectorAll("img").forEach((img) => {
+      const ph = document.createElement("span");
+      ph.className = "img-ph";
+      const alt = (img.getAttribute("alt") || "").trim();
+      ph.textContent = alt ? `Immagine: ${alt}` : "Immagine nell’articolo originale";
+      img.replaceWith(ph);
+    });
+    t.content.querySelectorAll("*").forEach((el) => {
+      [...el.attributes].forEach((a) => {
+        const n = a.name.toLowerCase();
+        const keep = (n === "href" && !/^\s*javascript:/i.test(a.value)) || n === "colspan" || n === "rowspan" ||
+          (n === "data-grafico" && el.tagName === "FIGURE");
+        if (!keep) el.removeAttribute(a.name);
+      });
+      if (el.tagName === "A") { el.setAttribute("target", "_blank"); el.setAttribute("rel", "noopener"); }
+    });
+    return t.innerHTML;
+  };
+
+  // Dati
+  let archivio = { aggiornato: "", schede: [] };
+  let erroreDati = false;
+  try { archivio = JSON.parse($("#archivio").textContent); } catch (e) { erroreDati = true; }
+  // Ordine per data, dalla più recente; a parità di data resta l'ordine dell'archivio; senza data in fondo.
+  const schede = (Array.isArray(archivio.schede) ? archivio.schede : []).slice()
+    .sort((a, b) => String(b.data || "").localeCompare(String(a.data || "")));
+  const byId = Object.create(null);
+  schede.forEach((s) => { byId[s.id] = s; s._piano = testoPiano(s.testo); });
+
+  const argomenti = new Map();
+  const stimoli = new Map();
+  // Gli argomenti dichiarati nell'archivio compaiono nel menu anche quando non hanno ancora schede.
+  (Array.isArray(archivio.argomenti) ? archivio.argomenti : []).forEach((a) => {
+    if (a && !argomenti.has(a)) argomenti.set(a, { n: 0, temi: new Map() });
+  });
+  schede.forEach((s) => {
+    const a = argomenti.get(s.argomento) || { n: 0, temi: new Map() };
+    a.n += 1;
+    const t = temaDi(s);
+    if (t) a.temi.set(t, (a.temi.get(t) || 0) + 1);
+    argomenti.set(s.argomento, a);
+    (s.stimoli || []).forEach((k) => {
+      const key = keyOf(k);
+      const cur = stimoli.get(key) || { ...k, key };
+      if (!cur.nota && k.nota) cur.nota = k.nota;
+      stimoli.set(key, cur);
+    });
+  });
+
+  // Selezione: una sola alla volta; senza selezione la vista resta vuota.
+  let sel = null;
+  let current = null;
+  let listScroll = 0;
+
+  const vista = $("#vista");
+  const toolbar = $(".toolbar");
+  const annuncio = $("#annuncio");
+
+  const filtra = () => {
+    if (!sel) return [];
+    switch (sel.tipo) {
+      case "tutte": return schede;
+      case "argomento": return schede.filter((s) => s.argomento === sel.argomento && (!sel.tema || temaDi(s) === sel.tema));
+      case "stimoli": return schede.filter((s) => (s.stimoli || []).length);
+      case "stimolo": return schede.filter((s) => (s.stimoli || []).some((k) => keyOf(k) === sel.chiave));
+      case "gruppo": return schede.filter((s) => (s.stimoli || []).some((k) => (k.tipo || "Altro") === sel.gruppo));
+      default: return [];
+    }
+  };
+  const etichettaSel = () => {
+    switch (sel.tipo) {
+      case "tutte": return "Tutte le schede";
+      case "argomento": return sel.tema ? `${sel.argomento} · ${sel.tema}` : sel.argomento;
+      case "stimoli": return "Tutti gli insight";
+      case "stimolo": {
+        const k = stimoli.get(sel.chiave);
+        return k ? (k.autore ? `${shortName(k)} · ${k.titolo}` : k.titolo) : "";
+      }
+      case "gruppo": return tipoLabel(sel.gruppo);
+      default: return "";
+    }
+  };
+
+  // Elenco
+  const kicker = (s) => esc(String(s.argomento || "").toLowerCase()) + (temaDi(s) ? " / " + esc(temaDi(s)) : "");
+  // Ogni voce dell'elenco si apre con un clic in qualsiasi punto (niente link con #: dentro Claude possono portare fuori dalla pagina)
+  const entry = (s) => `
+    <article class="entry" data-apri="${esc(s.id)}">
+      <div class="entry-margin">${s.data ? `<time datetime="${esc(s.data)}">${esc(dataBreve(s.data))}</time>` : ""}</div>
+      <div class="entry-body">
+        <div class="kicker">${kicker(s)}</div>
+        <h3 class="entry-title"><button type="button" class="entry-link" data-apri="${esc(s.id)}">${esc(s.titolo)}</button></h3>
+        ${estratto(s) ? `<p class="entry-concept">${esc(estratto(s))}</p>` : ""}
+        <span class="entry-more" aria-hidden="true">Leggi <span>→</span></span>
+      </div>
+    </article>`;
+
+  const renderList = () => {
+    if (erroreDati) {
+      vista.innerHTML = `<p class="vuoto">L’archivio non si legge: il blocco dati della pagina contiene un errore.</p>`;
+      return;
+    }
+    if (!sel) { vista.innerHTML = ""; annuncio.textContent = ""; return; }
+    const found = filtra();
+    vista.innerHTML = `<section>
+      <div class="sel-head"><h2>${esc(etichettaSel())}</h2><button type="button" class="chiudi" data-chiudi aria-label="Chiudi">×</button></div>
+      ${found.length ? found.map(entry).join("") : `<p class="vuoto">Ancora nessuna scheda.</p>`}
+    </section>`;
+    annuncio.textContent = `${etichettaSel()}: ${found.length === 1 ? "1 scheda" : found.length + " schede"}`;
+  };
+
+  // Scheda
+  const tabella = (t) => {
+    const al = t.allinea || [];
+    const cls = (i) => (al[i] === "r" ? ' class="num"' : "");
+    const groups = [];
+    (t.righe || []).forEach((r) => {
+      const last = groups[groups.length - 1];
+      if (last && last[0][0] === r[0]) last.push(r); else groups.push([r]);
+    });
+    const body = groups.map((g) => `<tbody>${g.map((r, ri) => `<tr>${
+      r.map((v, i) => {
+        if (i === 0) return ri === 0 ? `<th scope="rowgroup" rowspan="${g.length}">${esc(v)}</th>` : "";
+        return `<td${cls(i)}>${esc(v)}</td>`;
+      }).join("")
+    }</tr>`).join("")}</tbody>`).join("");
+    return `<section class="block"><h3>${esc(t.titolo || "Dati")}</h3>
+      <div class="table-wrap"><table>
+        <thead><tr>${(t.colonne || []).map((c, i) => `<th scope="col"${cls(i)}>${esc(c)}</th>`).join("")}</tr></thead>
+        ${body}
+      </table></div>
+      ${t.nota ? `<p class="table-note">${esc(t.nota)}</p>` : ""}
+    </section>`;
+  };
+  const sourceItem = (k) => `
+    <li>
+      <span class="src-type">${esc(String(k.tipo || "Altro").toLowerCase())}</span>
+      <span class="src-main">
+        <button type="button" class="src-link" data-stim="${esc(keyOf(k))}">${esc(k.autore || k.titolo)}</button>
+        ${k.autore ? `<span class="src-title">${esc(k.titolo)}</span>` : ""}
+        ${k.anno || k.nota ? `<span class="src-year">${esc([k.anno, k.nota].filter(Boolean).join(" · "))}</span>` : ""}
+      </span>
+    </li>`;
+  const list = (items, cls) => `<ul class="${cls}">${items.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>`;
+
+  const renderScheda = (s) => {
+    const meta = [
+      s.data ? ["Data", `<time datetime="${esc(s.data)}">${esc(dataLunga(s.data))}</time>`] : null,
+      ["Topic", `<button type="button" class="link-btn" data-arg="${esc(s.argomento)}">${esc(s.argomento)}</button>`]
+    ].filter(Boolean);
+    const blocks = [];
+    if (s.concetto) blocks.push(`<section class="block"><h3>Il concetto</h3><p class="concept">${esc(s.concetto)}</p></section>`);
+    if (s.testo) {
+      blocks.push(`<div class="testo">${pulisci(s.testo)}</div>`);
+    } else if (!s.concetto && !(s.riordino || []).length) {
+      blocks.push(`<p class="pending">Testo non ancora importato.</p>`);
+    }
+    if ((s.riordino || []).length) blocks.push(`<section class="block"><h3>Riordino</h3>${list(s.riordino, "points")}</section>`);
+    if (s.tabella) blocks.push(tabella(s.tabella));
+    const sources = (s.stimoli || []).slice().sort(bySource);
+    if (sources.length) blocks.push(`<section class="block"><h3>Insight</h3><ul class="sources">${sources.map(sourceItem).join("")}</ul></section>`);
+    if ((s.domande || []).length) blocks.push(`<section class="block"><h3>Domande aperte</h3>${list(s.domande, "points open")}</section>`);
+    const links = (s.collegamenti || []).filter((c) => byId[c.id]);
+    if (links.length) {
+      blocks.push(`<section class="block"><h3>Collegamenti</h3><ul class="links">${links.map((c) => `<li><button type="button" class="link-btn" data-apri="${esc(c.id)}">${esc(byId[c.id].titolo)}</button>${c.nota ? `<span class="why">${esc(c.nota)}</span>` : ""}</li>`).join("")}</ul></section>`);
+    }
+    vista.innerHTML = `
+      <div class="scheda-top"><button type="button" class="back" data-back><span aria-hidden="true">←</span> Indietro</button></div>
+      <article class="scheda">
+        <header class="scheda-head"><div class="kicker">${kicker(s)}</div><h2 class="scheda-title">${esc(s.titolo)}</h2></header>
+        <div class="scheda-grid">
+          <aside class="scheda-meta" aria-label="Dati della scheda"><dl>${meta.map(([dt, dd]) => `<div><dt>${dt}</dt><dd>${dd}</dd></div>`).join("")}</dl></aside>
+          <div class="scheda-body">${blocks.join("")}</div>
+        </div>
+      </article>`;
+    montaGrafici(vista, s);
+    annuncio.textContent = "";
+  };
+
+  // ---------- Grafici ----------
+  const fmt = (v, dec = 0) => Number(v).toLocaleString("it-IT", { minimumFractionDigits: dec, maximumFractionDigits: dec });
+  const passi = (min, max, passo) => {
+    const out = [];
+    for (let i = 0; min + i * passo <= max + passo * 1e-6; i++) out.push(+(min + i * passo).toFixed(10));
+    return out;
+  };
+  const tickFmt = (v, y) => (y.formato === "migliaia" ? (v === 0 ? "0" : `${fmt(v / 1000)}k`) : fmt(v, y.decimaliAsse ?? y.decimali ?? 0));
+  const valFmt = (v, y) => fmt(v, y.decimali ?? 0);
+  const n1 = (v) => Math.round(v * 10) / 10;
+
+  const tooltip = (plot) => {
+    const tip = document.createElement("div");
+    tip.className = "g-tip";
+    tip.hidden = true;
+    const val = document.createElement("strong");
+    const lab = document.createElement("span");
+    tip.append(val, lab);
+    plot.append(tip);
+    return {
+      show(x, y, valore, etichetta) {
+        val.textContent = valore;
+        lab.textContent = etichetta;
+        tip.hidden = false;
+        const W = plot.clientWidth;
+        const tw = tip.offsetWidth, th = tip.offsetHeight;
+        let left = x + 14;
+        if (left + tw > W) left = x - 14 - tw;
+        left = Math.max(0, Math.min(left, W - tw));
+        let top = y - th - 12;
+        if (top < 0) top = y + 14;
+        tip.style.left = `${left}px`;
+        tip.style.top = `${top}px`;
+      },
+      hide() { tip.hidden = true; }
+    };
+  };
+  const puntatore = (plot, e) => {
+    const svg = plot.querySelector("svg");
+    const r = svg.getBoundingClientRect();
+    const k = Number(svg.getAttribute("width")) / r.width || 1;
+    return { x: (e.clientX - r.left) * k, y: (e.clientY - r.top) * k, k };
+  };
+  const tabellaSr = (titolo, intestazioni, righe) => `<table class="sr"><caption>${esc(titolo)}</caption><thead><tr>${
+    intestazioni.map((h) => `<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${
+    righe.map((r) => `<tr>${r.map((c) => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+
+  // Linea con punti, eventuali barre d'errore e un valore evidenziato
+  const linea = {
+    tabella: (g) => tabellaSr(g.y.titolo, [g.x.titolo, g.y.titolo], g.x.valori.map((k, i) => [k, g.errori ? `${valFmt(g.valori[i], g.y)} ± ${valFmt(g.errori[i], g.y)}` : valFmt(g.valori[i], g.y)])),
+    etichetta: (g) => `${g.y.titolo} per ${g.x.titolo.toLowerCase()}. Usa le frecce per scorrere i valori.`,
+    disegna(plot, g, stato) {
+      const W = Math.max(260, Math.round(plot.clientWidth));
+      const H = W < 520 ? 236 : 276;
+      const y = g.y, xs = g.x.valori, vals = g.valori, err = g.errori || null;
+      const ticks = passi(y.min, y.max, y.passo);
+      const lbl = ticks.map((t) => tickFmt(t, y));
+      const left = 12 + Math.max(...lbl.map((s) => s.length)) * 7.1;
+      const right = 14, top = 36, bottom = 48;
+      const iw = W - left - right, ih = H - top - bottom;
+      const pad = Math.min(20, iw / (xs.length * 2));
+      const X = (i) => n1(left + pad + (iw - 2 * pad) * (i / (xs.length - 1)));
+      const Y = (v) => n1(top + ih * (1 - (v - y.min) / (y.max - y.min)));
+      const hi = xs.indexOf(g.evidenzia);
+      let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">`;
+      if (hi >= 0) s += `<rect class="g-band" x="${X(hi) - 15}" y="${top - 22}" width="30" height="${ih + 22}" rx="4"></rect>`;
+      ticks.forEach((t, i) => {
+        const yy = Math.round(Y(t)) + .5;
+        s += `<line class="g-grid" x1="${left}" x2="${W - right}" y1="${yy}" y2="${yy}"></line>`;
+        s += `<text class="g-tick" x="${n1(left - 8)}" y="${yy + 4}" text-anchor="end">${esc(lbl[i])}</text>`;
+      });
+      xs.forEach((k, i) => { s += `<text class="g-tick" x="${X(i)}" y="${top + ih + 19}" text-anchor="middle">${esc(k)}</text>`; });
+      s += `<text class="g-axis-title" x="0" y="13">${esc(y.titolo)}</text>`;
+      s += `<text class="g-axis-title" x="${n1(left + iw / 2)}" y="${H - 5}" text-anchor="middle">${esc(g.x.titolo)}</text>`;
+      if (err) vals.forEach((v, i) => {
+        const a = Y(v - err[i]), b = Y(v + err[i]), x = X(i);
+        s += `<path class="g-err" d="M${x},${a}V${b}M${x - 4},${a}H${x + 4}M${x - 4},${b}H${x + 4}"></path>`;
+      });
+      s += `<line class="g-cross" x1="0" x2="0" y1="${top}" y2="${top + ih}" visibility="hidden"></line>`;
+      s += `<path class="g-line" d="${vals.map((v, i) => `${i ? "L" : "M"}${X(i)},${Y(v)}`).join("")}"></path>`;
+      vals.forEach((v, i) => { s += `<circle class="g-dot" cx="${X(i)}" cy="${Y(v)}" r="${i === hi ? 6 : 4}"></circle>`; });
+      if (hi >= 0) {
+        const yTop = Math.min(Y(vals[hi]), err ? Y(vals[hi] + err[hi]) : Infinity);
+        s += `<text class="g-note" x="${X(hi)}" y="${n1(Math.max(top - 6, yTop - 12))}" text-anchor="middle">k = ${esc(g.evidenzia)}</text>`;
+      }
+      s += `</svg>`;
+      plot.innerHTML = s;
+      const tip = tooltip(plot);
+      const cross = plot.querySelector(".g-cross");
+      const mostra = (i, k = 1) => {
+        stato.i = i;
+        cross.setAttribute("x1", X(i)); cross.setAttribute("x2", X(i));
+        cross.setAttribute("visibility", "visible");
+        const valore = err ? `${valFmt(vals[i], y)} ± ${valFmt(err[i], y)}` : valFmt(vals[i], y);
+        tip.show(X(i) / k, Y(vals[i]) / k, valore, `k = ${xs[i]}`);
+      };
+      const nascondi = () => { cross.setAttribute("visibility", "hidden"); tip.hide(); };
+      return {
+        move(e) {
+          const p = puntatore(plot, e);
+          const i = Math.round((p.x - left - pad) / ((iw - 2 * pad) / (xs.length - 1)));
+          mostra(Math.max(0, Math.min(xs.length - 1, i)), p.k);
+        },
+        hide: nascondi,
+        focus() { mostra(stato.i ?? Math.max(0, hi)); },
+        key(e) {
+          if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+          e.preventDefault();
+          const i = (stato.i ?? Math.max(0, hi)) + (e.key === "ArrowRight" ? 1 : -1);
+          mostra(Math.max(0, Math.min(xs.length - 1, i)));
+        }
+      };
+    }
+  };
+
+  // Dispersione con gruppi: colore e forma per gruppo, legenda che evidenzia
+  const FORME = ["cerchio", "quadrato", "triangolo", "rombo", "triangolo-giu", "croce"];
+  const forma = (f, x, y, r, cls) => {
+    const c = `class="${cls}"`;
+    switch (f) {
+      case "quadrato": { const h = r * .86; return `<rect ${c} x="${n1(x - h)}" y="${n1(y - h)}" width="${n1(2 * h)}" height="${n1(2 * h)}"></rect>`; }
+      case "triangolo": { const h = r * 1.22; return `<path ${c} d="M${n1(x)},${n1(y - h)}L${n1(x + h)},${n1(y + h * .72)}L${n1(x - h)},${n1(y + h * .72)}Z"></path>`; }
+      case "rombo": { const h = r * 1.22; return `<path ${c} d="M${n1(x)},${n1(y - h)}L${n1(x + h)},${n1(y)}L${n1(x)},${n1(y + h)}L${n1(x - h)},${n1(y)}Z"></path>`; }
+      case "triangolo-giu": { const h = r * 1.22; return `<path ${c} d="M${n1(x)},${n1(y + h)}L${n1(x + h)},${n1(y - h * .72)}L${n1(x - h)},${n1(y - h * .72)}Z"></path>`; }
+      case "croce": { const a = r * 1.15, b = r * .42; return `<path ${c} d="M${n1(x - b)},${n1(y - a)}H${n1(x + b)}V${n1(y - b)}H${n1(x + a)}V${n1(y + b)}H${n1(x + b)}V${n1(y + a)}H${n1(x - b)}V${n1(y + b)}H${n1(x - a)}V${n1(y - b)}H${n1(x - b)}Z"></path>`; }
+      default: return `<circle ${c} cx="${n1(x)}" cy="${n1(y)}" r="${n1(r)}"></circle>`;
+    }
+  };
+  const dispersione = {
+    tabella: (g) => tabellaSr(g.titolo || "Gruppi", ["Gruppo", "Clienti", "Età media", "Reddito medio (k$)", "Spesa media"],
+      (g.riepilogo || []).map((r, i) => [g.gruppi[i], r.clienti, fmt(r.eta, 1), fmt(r.reddito, 1), fmt(r.spesa, 1)])),
+    etichetta: (g) => `${g.titolo || "Grafico a dispersione"}: ${g.y.titolo} rispetto a ${g.x.titolo}.`,
+    extra(fig, g, stato, ridisegna) {
+      const ul = document.createElement("ul");
+      ul.className = "g-legend";
+      const info = document.createElement("p");
+      info.className = "g-info";
+      g.gruppi.forEach((nome, i) => {
+        const li = document.createElement("li");
+        const b = document.createElement("button");
+        b.type = "button";
+        b.setAttribute("aria-pressed", "false");
+        b.innerHTML = `<svg viewBox="-6 -6 12 12" aria-hidden="true">${forma(FORME[i], 0, 0, 4.6, `g${i + 1}`)}</svg>`;
+        b.append(document.createTextNode(nome));
+        const riassunto = () => {
+          const r = (g.riepilogo || [])[i];
+          info.textContent = r ? `${nome}: ${r.clienti} clienti · età media ${fmt(r.eta)} anni · reddito medio ${fmt(r.reddito)} k$ · spesa media ${fmt(r.spesa)}` : "";
+        };
+        b.addEventListener("click", () => {
+          stato.fisso = stato.fisso === i ? null : i;
+          ul.querySelectorAll("button").forEach((x, j) => x.setAttribute("aria-pressed", String(stato.fisso === j)));
+          stato.evidenzia(stato.fisso);
+          if (stato.fisso === null) info.textContent = ""; else riassunto();
+        });
+        b.addEventListener("pointerenter", () => { stato.evidenzia(i); riassunto(); });
+        b.addEventListener("focus", () => { stato.evidenzia(i); riassunto(); });
+        const torna = () => {
+          stato.evidenzia(stato.fisso);
+          if (stato.fisso === null) info.textContent = "";
+          else { const r = (g.riepilogo || [])[stato.fisso]; info.textContent = r ? `${g.gruppi[stato.fisso]}: ${r.clienti} clienti · età media ${fmt(r.eta)} anni · reddito medio ${fmt(r.reddito)} k$ · spesa media ${fmt(r.spesa)}` : ""; }
+        };
+        b.addEventListener("pointerleave", torna);
+        b.addEventListener("blur", torna);
+        li.append(b);
+        ul.append(li);
+      });
+      return [ul, info];
+    },
+    disegna(plot, g, stato) {
+      const W = Math.max(280, Math.round(plot.clientWidth));
+      const H = Math.round(Math.min(420, Math.max(300, W * .68)));
+      const left = 38, right = 14, top = 36, bottom = 48;
+      const iw = W - left - right, ih = H - top - bottom;
+      const X = (v) => n1(left + iw * (v - g.x.min) / (g.x.max - g.x.min));
+      const Y = (v) => n1(top + ih * (1 - (v - g.y.min) / (g.y.max - g.y.min)));
+      const r = W < 480 ? 3.6 : 4.3;
+      let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">`;
+      passi(g.y.min, g.y.max, g.y.passo).forEach((t) => {
+        const yy = Math.round(Y(t)) + .5;
+        s += `<line class="g-grid" x1="${left}" x2="${W - right}" y1="${yy}" y2="${yy}"></line><text class="g-tick" x="${left - 8}" y="${yy + 4}" text-anchor="end">${esc(fmt(t))}</text>`;
+      });
+      passi(g.x.min, g.x.max, g.x.passo).forEach((t) => {
+        const xx = Math.round(X(t)) + .5;
+        s += `<line class="g-grid" x1="${xx}" x2="${xx}" y1="${top}" y2="${top + ih}"></line><text class="g-tick" x="${xx}" y="${top + ih + 19}" text-anchor="middle">${esc(fmt(t))}</text>`;
+      });
+      s += `<text class="g-axis-title" x="0" y="13">${esc(g.y.titolo)}</text>`;
+      s += `<text class="g-axis-title" x="${n1(left + iw / 2)}" y="${H - 5}" text-anchor="middle">${esc(g.x.titolo)}</text>`;
+      s += `<g class="g-punti">${g.punti.map((p) => forma(FORME[p[2] - 1], X(p[0]), Y(p[1]), r, `g-pt g${p[2]}`)).join("")}</g>`;
+      s += `<circle class="g-hl" r="${n1(r + 4)}" cx="-20" cy="-20" visibility="hidden"></circle>`;
+      s += `</svg>`;
+      plot.innerHTML = s;
+      const tip = tooltip(plot);
+      const forme = [...plot.querySelectorAll(".g-pt")];
+      const hl = plot.querySelector(".g-hl");
+      stato.evidenzia = (gi) => {
+        forme.forEach((el, j) => el.classList.toggle("dim", gi !== null && gi !== undefined && g.punti[j][2] - 1 !== gi));
+      };
+      stato.evidenzia(stato.fisso ?? null);
+      const nascondi = () => { hl.setAttribute("visibility", "hidden"); tip.hide(); };
+      return {
+        move(e) {
+          const p = puntatore(plot, e);
+          let best = -1, bd = Infinity;
+          g.punti.forEach((q, j) => {
+            if (stato.fisso !== null && stato.fisso !== undefined && q[2] - 1 !== stato.fisso) return;
+            const d = (X(q[0]) - p.x) ** 2 + (Y(q[1]) - p.y) ** 2;
+            if (d < bd) { bd = d; best = j; }
+          });
+          if (best < 0 || bd > (24 * p.k) ** 2) { nascondi(); return; }
+          const q = g.punti[best];
+          hl.setAttribute("cx", X(q[0])); hl.setAttribute("cy", Y(q[1])); hl.setAttribute("visibility", "visible");
+          tip.show(X(q[0]) / p.k, Y(q[1]) / p.k, `Reddito ${q[0]} k$ · spesa ${q[1]}`, `${g.gruppi[q[2] - 1]}${q[3] ? ` · ${q[3]} anni` : ""}`);
+        },
+        hide: nascondi
+      };
+    }
+  };
+
+  // Quote di un totale: barra sottile divisa, etichette sopra
+  const quote = {
+    interattivo: false,
+    tabella: (g) => {
+      const tot = g.voci.reduce((a, v) => a + v.valore, 0);
+      return tabellaSr(g.titolo, ["Voce", "Valore", "Quota"], g.voci.map((v) => [v.etichetta, v.valore, `${fmt(100 * v.valore / tot)}%`]));
+    },
+    etichetta: (g) => g.titolo,
+    disegna(plot, g) {
+      const tot = g.voci.reduce((a, v) => a + v.valore, 0);
+      plot.innerHTML = `<div class="g-quote">
+        <div class="g-quote-lbls">${g.voci.map((v, i) => `<span><i class="s${i + 1}"></i><b>${esc(v.etichetta)}</b> ${esc(fmt(v.valore))} · ${esc(fmt(100 * v.valore / tot))}%</span>`).join("")}</div>
+        <div class="g-split">${g.voci.map((v, i) => `<span class="s${i + 1}"></span>`).join("")}</div>
+      </div>`;
+      plot.querySelectorAll(".g-split span").forEach((el, i) => { el.style.flexGrow = String(g.voci[i].valore); });
+      return {};
+    }
+  };
+
+  // Istogrammi affiancati con la stessa scala verticale
+  const istogrammi = {
+    tabella: (g) => g.pannelli.map((p) => tabellaSr(`${g.titolo}: ${p.titolo}`, ["Classe", "Clienti"],
+      p.conteggi.map((c, i) => [`${fmt(p.inizio + i * p.passo)}–${fmt(p.inizio + (i + 1) * p.passo)}${p.unita ? " " + p.unita : ""}`, c]))).join(""),
+    etichetta: (g) => g.titolo,
+    disegna(plot, g, stato) {
+      const W = Math.max(260, Math.round(plot.clientWidth));
+      const cols = W >= 540 ? 3 : 1;
+      const gx = 26, gy = 28;
+      const pw = cols === 3 ? (W - gx * 2) / 3 : W;
+      const head = 24, ph = cols === 3 ? 150 : 132, foot = 24, left = 28;
+      const blocco = head + ph + foot;
+      const H = cols === 3 ? blocco : blocco * 3 + gy * 2;
+      const ymax = Math.max(...g.pannelli.flatMap((p) => p.conteggi));
+      const passo = ymax > 40 ? 20 : 10;
+      const top = Math.ceil(ymax / passo) * passo;
+      const geo = [];
+      let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">`;
+      g.pannelli.forEach((p, pi) => {
+        const ox = cols === 3 ? pi * (pw + gx) : 0;
+        const oy = cols === 3 ? 0 : pi * (blocco + gy);
+        const y0 = oy + head, base = y0 + ph;
+        const n = p.conteggi.length;
+        const band = (pw - left) / n;
+        const bw = Math.min(24, band - 2);
+        s += `<text class="g-panel-title" x="${n1(ox)}" y="${oy + 14}">${esc(p.titolo)}${p.unita ? `<tspan class="g-panel-unit" dx="6">${esc(p.unita)}</tspan>` : ""}</text>`;
+        passi(0, top, passo * 2 > top ? passo : passo * 2).forEach((t) => {
+          const yy = Math.round(base - ph * t / top) + .5;
+          s += `<line class="g-grid" x1="${n1(ox + left)}" x2="${n1(ox + pw)}" y1="${yy}" y2="${yy}"></line><text class="g-tick" x="${n1(ox + left - 6)}" y="${yy + 4}" text-anchor="end">${t}</text>`;
+        });
+        const bars = [];
+        p.conteggi.forEach((c, i) => {
+          const x = ox + left + i * band + (band - bw) / 2;
+          const h = ph * c / top;
+          const rr = Math.min(3, bw / 2, h);
+          const yTop = base - h;
+          if (c > 0) s += `<path class="g-bar" data-p="${pi}" data-i="${i}" d="M${n1(x)},${n1(base)}V${n1(yTop + rr)}Q${n1(x)},${n1(yTop)} ${n1(x + rr)},${n1(yTop)}H${n1(x + bw - rr)}Q${n1(x + bw)},${n1(yTop)} ${n1(x + bw)},${n1(yTop + rr)}V${n1(base)}Z"></path>`;
+          bars.push({ x0: ox + left + i * band, x1: ox + left + (i + 1) * band, cx: x + bw / 2, top: yTop });
+        });
+        const maxEt = Math.max(2, Math.floor((pw - left) / 30));
+        const ogni = Math.ceil((n + 1) / maxEt);
+        for (let i = 0; i <= n; i += ogni) {
+          // L'ultima etichetta, sul bordo destro, si allinea a destra per non uscire dal riquadro
+          const xl = ox + left + i * band, finale = xl > ox + pw - 12;
+          s += `<text class="g-tick" x="${n1(finale ? ox + pw : xl)}" y="${base + 17}" text-anchor="${finale ? "end" : "middle"}">${esc(fmt(p.inizio + i * p.passo))}</text>`;
+        }
+        geo.push({ p, pi, y0, base, bars });
+      });
+      s += `</svg>`;
+      plot.innerHTML = s;
+      const tip = tooltip(plot);
+      let on = null;
+      const nascondi = () => { if (on) on.classList.remove("on"); on = null; tip.hide(); };
+      return {
+        move(e) {
+          const q = puntatore(plot, e);
+          for (const gg of geo) {
+            if (q.y < gg.y0 - 4 || q.y > gg.base + 4) continue;
+            const i = gg.bars.findIndex((b) => q.x >= b.x0 && q.x < b.x1);
+            if (i < 0) continue;
+            const p = gg.p, b = gg.bars[i];
+            if (on) on.classList.remove("on");
+            on = plot.querySelector(`.g-bar[data-p="${gg.pi}"][data-i="${i}"]`);
+            if (on) on.classList.add("on");
+            const c = p.conteggi[i];
+            tip.show(b.cx / q.k, b.top / q.k, `${c} ${c === 1 ? "cliente" : "clienti"}`, `${p.titolo}: ${fmt(p.inizio + i * p.passo)}–${fmt(p.inizio + (i + 1) * p.passo)}${p.unita ? " " + p.unita : ""}`);
+            return;
+          }
+          nascondi();
+        },
+        hide: nascondi
+      };
+    }
+  };
+
+  // Punte di freccia disegnate a mano (niente marker con id, così più diagrammi convivono nella pagina)
+  const punta = (x, y, dir) => {
+    const a = 8, b = 4.5;
+    const p = {
+      giu: [[x - b, y - a], [x + b, y - a], [x, y]],
+      destra: [[x - a, y - b], [x - a, y + b], [x, y]],
+      su: [[x - b, y + a], [x + b, y + a], [x, y]]
+    }[dir];
+    return `<path class="d-head" d="M${p.map((q) => q.map(n1).join(",")).join("L")}Z"></path>`;
+  };
+
+  // Diagramma di flusso del ciclo dell'algoritmo genetico
+  const flusso = {
+    interattivo: false,
+    disegna(plot, g) {
+      if (plot.querySelector("svg")) return {};
+      const BW = 210, BH = 36, X0 = 40, CX = X0 + BW / 2, W = 392, H = 382;
+      const Y = { init: 8, fit: 70, dec: 152, sel: 216, cro: 276, mut: 336 };
+      const box = (y, testo, cls) => `<rect class="d-box${cls ? " " + cls : ""}" x="${X0}" y="${y}" width="${BW}" height="${BH}" rx="3"></rect><text class="d-txt" x="${CX}" y="${y + BH / 2 + 4}" text-anchor="middle">${esc(testo)}</text>`;
+      const giu = (y1, y2) => `<line class="d-line" x1="${CX}" x2="${CX}" y1="${y1}" y2="${y2 - 7}"></line>${punta(CX, y2, "giu")}`;
+      let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(g.descrizione || "")}">`;
+      s += box(Y.init, g.passi[0]) + giu(Y.init + BH, Y.fit);
+      s += box(Y.fit, g.passi[1]) + giu(Y.fit + BH, Y.dec - 26);
+      s += `<ellipse class="d-dec" cx="${CX}" cy="${Y.dec}" rx="96" ry="26"></ellipse><text class="d-txt" x="${CX}" y="${Y.dec + 4}" text-anchor="middle">${esc(g.decisione)}</text>`;
+      s += `<line class="d-line" x1="${CX + 96}" x2="${284 - 7}" y1="${Y.dec}" y2="${Y.dec}"></line>${punta(284, Y.dec, "destra")}`;
+      s += `<text class="d-sml" x="${(CX + 96 + 284) / 2}" y="${Y.dec - 8}" text-anchor="middle">${esc(g.si)}</text>`;
+      s += `<rect class="d-box d-out" x="286" y="${Y.dec - BH / 2}" width="100" height="${BH}" rx="3"></rect><text class="d-txt" x="336" y="${Y.dec + 4}" text-anchor="middle">${esc(g.uscita)}</text>`;
+      s += giu(Y.dec + 26, Y.sel) + `<text class="d-sml" x="${CX + 10}" y="${(Y.dec + 26 + Y.sel) / 2 + 4}">${esc(g.no)}</text>`;
+      s += box(Y.sel, g.ciclo[0]) + giu(Y.sel + BH, Y.cro);
+      s += box(Y.cro, g.ciclo[1]) + giu(Y.cro + BH, Y.mut);
+      s += box(Y.mut, g.ciclo[2]);
+      const yf = Y.fit + BH / 2, ym = Y.mut + BH / 2;
+      s += `<path class="d-line" d="M${X0},${ym}H18Q12,${ym} 12,${ym - 6}V${yf + 6}Q12,${yf} 18,${yf}H${X0 - 7}"></path>${punta(X0, yf, "destra")}`;
+      s += `</svg>`;
+      plot.innerHTML = s;
+      return {};
+    }
+  };
+
+  // Walk-forward analysis: finestre in sample e out of sample che scorrono lungo la serie
+  const wfa = {
+    interattivo: false,
+    disegna(plot, g) {
+      const W = Math.max(300, Math.round(plot.clientWidth));
+      const n = g.segmenti, sw = W / n, E = g.etichette;
+      const H1 = W < 520 ? 84 : 104, pitch = 24, bh = 12;
+      const y0 = H1 + 34;
+      const H = y0 + g.finestre * pitch + 4;
+      let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(g.descrizione || "")}">`;
+      s += `<rect class="w-panel" x=".5" y=".5" width="${W - 1}" height="${H1 - 1}"></rect>`;
+      for (let k = 1; k < n; k++) s += `<line class="w-div" x1="${Math.round(k * sw) + .5}" x2="${Math.round(k * sw) + .5}" y1="1" y2="${H1 - 1}"></line>`;
+      const pts = g.prezzo.map((v, i) => `${n1(6 + (W - 12) * i / (g.prezzo.length - 1))},${n1(H1 - 12 - v * (H1 - 24))}`);
+      s += `<polyline class="w-price" points="${pts.join(" ")}"></polyline>`;
+      for (let r = 0; r < g.finestre; r++) {
+        const yy = y0 + r * pitch;
+        const xa = r * sw, xb = Math.min(n, r + g.is) * sw, conOos = r + g.is < n, xc = Math.min(n, r + g.is + g.oos) * sw;
+        s += `<rect class="w-is" x="${n1(xa + 1)}" y="${yy}" width="${n1(xb - xa - 2)}" height="${bh}" rx="2"></rect>`;
+        if (conOos) s += `<rect class="w-oos" x="${n1(xb + 1)}" y="${yy}" width="${n1(xc - xb - 2)}" height="${bh}" rx="2"></rect>`;
+        s += `<line class="w-run" x1="${n1(xa + 1)}" x2="${n1((conOos ? xc : xb) - 1)}" y1="${yy + bh + 4}" y2="${yy + bh + 4}"></line>`;
+      }
+      s += `<text class="w-lbl" x="${n1(g.is * sw / 2)}" y="${y0 - 9}" text-anchor="middle">${esc(E.is)}</text>`;
+      s += `<text class="w-lbl" x="${n1((g.is + g.oos / 2) * sw)}" y="${y0 - 9}" text-anchor="middle">${esc(E.oos)}</text>`;
+      const span = (x1, x2, yy, cls, testo) =>
+        `<path class="${cls}" d="M${n1(x1 + 2)},${yy}H${n1(x2 - 2)}M${n1(x1 + 2)},${yy - 3}V${yy + 3}M${n1(x2 - 2)},${yy - 3}V${yy + 3}"></path>` +
+        `<text class="w-note" x="${n1((x1 + x2) / 2)}" y="${yy - 6}" text-anchor="middle">${esc(testo)}</text>`;
+      const ya = y0 + (g.finestre - 2) * pitch + 10, yb = ya + pitch;
+      s += span(0, g.is * sw, ya, "w-span-is", E.opt) + span(g.is * sw, (g.is + g.oos) * sw, ya, "w-span-oos", E.fwd);
+      s += span(0, (g.is + g.oos) * sw, yb, "w-span-run", E.run);
+      s += `</svg>`;
+      plot.innerHTML = s;
+      return {};
+    }
+  };
+
+  // Popolazione di stringhe di bit: colonne = posizione del bit, righe = individui (dal basso)
+  const quotaUni = (str) => { let t = 0; for (const c of str) t += Number(c); return t / (2 * str.length); };
+  const bitmap = {
+    tabella: (g) => tabellaSr(g.descrizione || "", [g.x.titolo, "Share of 1s"], g.livelli.map((str, j) => [j + 1, `${Math.round(100 * quotaUni(str))}%`])),
+    etichetta: (g) => `${g.descrizione || ""} Use the arrow keys to read each bit position.`,
+    disegna(plot, g, stato) {
+      const W = Math.max(280, Math.round(plot.clientWidth));
+      const left = 38, right = 2, top = 30, bottom = 44;
+      const ih = W < 520 ? 220 : 264, H = top + ih + bottom, iw = W - left - right;
+      const nc = g.livelli.length, nr = g.righe, cw = iw / nc, rh = ih / nr;
+      let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">`;
+      s += `<text class="g-axis-title" x="0" y="13">${esc(g.y.titolo)}</text>`;
+      s += `<rect class="g-bit1" x="${W - 58}" y="4" width="10" height="10" rx="2"></rect><text class="g-tick" x="${W - 44}" y="13">1</text>`;
+      s += `<rect class="g-bit0" x="${W - 28}" y="4" width="10" height="10" rx="2"></rect><text class="g-tick" x="${W - 14}" y="13">0</text>`;
+      g.livelli.forEach((str, j) => {
+        const x = left + j * cw;
+        s += `<rect class="g-bit0" x="${n1(x)}" y="${top}" width="${n1(cw - 1)}" height="${ih}"></rect>`;
+        let i = 0;
+        while (i < nr) {
+          const c = str[i];
+          let k = i;
+          while (k < nr && str[k] === c) k++;
+          if (c !== "0") s += `<rect class="g-bit1${c === "1" ? " mezzo" : ""}" x="${n1(x)}" y="${n1(top + ih - k * rh)}" width="${n1(cw - 1)}" height="${n1((k - i) * rh + .3)}"></rect>`;
+          i = k;
+        }
+      });
+      for (let v = 100; v <= g.max; v += 100) {
+        const yy = n1(top + ih - (v / g.max) * ih);
+        s += `<text class="g-tick" x="${left - 6}" y="${yy + 4}" text-anchor="end">${v}</text>`;
+      }
+      const ogni = cw < 14 ? 5 : 1;
+      for (let j = 0; j < nc; j++) {
+        if (ogni > 1 && j !== 0 && (j + 1) % ogni) continue;
+        s += `<text class="g-tick" x="${n1(left + j * cw + cw / 2)}" y="${top + ih + 18}" text-anchor="middle">${j + 1}</text>`;
+      }
+      s += `<text class="g-axis-title" x="${n1(left + iw / 2)}" y="${H - 5}" text-anchor="middle">${esc(g.x.titolo)}</text>`;
+      s += `<rect class="g-col-hl" x="-20" y="${top}" width="${n1(cw - 1)}" height="${ih}" visibility="hidden"></rect>`;
+      s += `</svg>`;
+      plot.innerHTML = s;
+      const tip = tooltip(plot);
+      const hl = plot.querySelector(".g-col-hl");
+      const mostra = (j, k = 1) => {
+        stato.i = j;
+        const x = left + j * cw;
+        hl.setAttribute("x", n1(x)); hl.setAttribute("visibility", "visible");
+        tip.show((x + cw / 2) / k, top / k + 30, `Bit ${j + 1}`, `1 in ${Math.round(100 * quotaUni(g.livelli[j]))}% of the population`);
+      };
+      const nascondi = () => { hl.setAttribute("visibility", "hidden"); tip.hide(); };
+      return {
+        move(e) {
+          const p = puntatore(plot, e);
+          const j = Math.floor((p.x - left) / cw);
+          if (j < 0 || j >= nc || p.y < top || p.y > top + ih) { nascondi(); return; }
+          mostra(j, p.k);
+        },
+        hide: nascondi,
+        focus() { mostra(stato.i ?? 0); },
+        key(e) {
+          if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+          e.preventDefault();
+          mostra(Math.max(0, Math.min(nc - 1, (stato.i ?? 0) + (e.key === "ArrowRight" ? 1 : -1))));
+        }
+      };
+    }
+  };
+
+  // Crossover: i figli ereditano i segmenti dei genitori; ogni cella ha il colore del genitore da cui viene
+  const crossover = {
+    interattivo: false,
+    disegna(plot, g) {
+      const W = Math.max(300, Math.round(plot.clientWidth));
+      const nb = g.p1.length, lw = 28;
+      const largo = W >= 600;
+      const cs = Math.max(10, Math.min(18, Math.floor(largo ? (W - 2 * lw - 64) / (2 * nb) : (W - lw) / nb)));
+      const rowH = cs + 6, rw = nb * cs;
+      const src = { p1: g.p1, p2: g.p2 };
+      const riga = (ox, y, nome, bits, fonti) => {
+        let s = `<text class="x-name" x="${ox}" y="${n1(y + cs / 2 + 4)}">${esc(nome)}</text>`;
+        for (let i = 0; i < nb; i++) {
+          const x = ox + lw + i * cs;
+          s += `<rect class="${fonti[i] === "p1" ? "x1" : "x2"}" x="${n1(x + .5)}" y="${n1(y + .5)}" width="${cs - 1}" height="${cs - 1}" rx="1.5"></rect>`;
+          s += `<text class="x-bit" x="${n1(x + cs / 2)}" y="${n1(y + cs / 2 + cs * .22)}" text-anchor="middle">${bits[i]}</text>`;
+        }
+        return s;
+      };
+      let s = "", y = 0;
+      g.esempi.forEach((ex, ei) => {
+        const tagli = [0, ...ex.punti, nb];
+        const fontiFiglio = (da) => { const f = []; da.forEach((d, i) => { for (let k = tagli[i]; k < tagli[i + 1]; k++) f.push(d); }); return f; };
+        const bitsFiglio = (da) => da.map((d, i) => src[d].slice(tagli[i], tagli[i + 1])).join("");
+        const yP = y + 22;
+        s += riga(0, yP, "P1", g.p1, Array(nb).fill("p1")) + riga(0, yP + rowH, "P2", g.p2, Array(nb).fill("p2"));
+        ex.punti.forEach((k, pi) => {
+          const x = n1(lw + k * cs - .5);
+          s += `<line class="x-cut" x1="${x}" x2="${x}" y1="${y + 16}" y2="${yP + 2 * rowH}"></line>`;
+          const testo = ex.etichette[pi] || "";
+          const ancora = ex.punti.length === 1 ? "middle" : (x - testo.length * 6.2 < 0 ? "start" : "end");
+          s += `<text class="x-lbl" x="${x}" y="${y + 11}" text-anchor="${ancora}">${esc(testo)}</text>`;
+        });
+        if (largo) {
+          const ox = lw + rw + 64;
+          const ym = yP + rowH - 3;
+          s += `<line class="d-line" x1="${lw + rw + 12}" x2="${ox - 18}" y1="${ym}" y2="${ym}"></line>${punta(ox - 10, ym, "destra")}`;
+          s += `<text class="x-lbl" x="${n1(lw + rw + 32)}" y="${ym + 22}" text-anchor="middle">${esc(ex.titolo)}</text>`;
+          ex.figli.forEach((f, fi) => { s += riga(ox, yP + fi * rowH, f.nome, bitsFiglio(f.da), fontiFiglio(f.da)); });
+          y = yP + 2 * rowH + 34;
+        } else {
+          const ya = yP + 2 * rowH + 8;
+          s += `<line class="d-line" x1="${lw + 10}" x2="${lw + 10}" y1="${ya}" y2="${ya + 16}"></line>${punta(lw + 10, ya + 24, "giu")}`;
+          s += `<text class="x-lbl" x="${lw + 24}" y="${ya + 17}">${esc(ex.titolo)}</text>`;
+          const yC = ya + 32;
+          ex.figli.forEach((f, fi) => { s += riga(0, yC + fi * rowH, f.nome, bitsFiglio(f.da), fontiFiglio(f.da)); });
+          y = yC + 2 * rowH + 28;
+        }
+      });
+      const H = y - 18;
+      const Wd = largo ? 2 * (lw + rw) + 64 : W;
+      plot.innerHTML = `<svg viewBox="0 0 ${Wd} ${H}" width="${Wd}" height="${H}" role="img" aria-label="${esc(g.descrizione || "")}">${s}</svg>`;
+      return {};
+    }
+  };
+
+  // Tabella di dati con intestazioni di gruppo e riga del totale
+  const tabellaDati = {
+    interattivo: false,
+    disegna(plot, g) {
+      if (plot.querySelector("table")) return {};
+      const dec = g.decimali ?? 2;
+      const testuale = Boolean(g.testuale);
+      const cella = (v) => (typeof v === "number" ? `${v < 0 ? "−" : ""}${Math.abs(v).toFixed(dec)}` : esc(v));
+      const col = (i) => (testuale ? ` data-col="${esc(g.colonne[i + 1] || "")}"` : "");
+      const riga = (r, tag) => `<tr><th scope="row">${esc(r[0])}</th>${r.slice(1).map((v, i) => `<${tag}${typeof v === "number" ? ' class="num"' : ""}${col(i)}>${cella(v)}</${tag}>`).join("")}</tr>`;
+      plot.innerHTML = `<div class="table-wrap"><table class="g-tab${testuale ? " testuale" : ""}">
+        <thead>
+          ${g.gruppi ? `<tr class="grp">${g.gruppi.map(([t, n]) => `<th scope="colgroup" colspan="${n}">${esc(t)}</th>`).join("")}</tr>` : ""}
+          <tr>${g.colonne.map((c, i) => `<th scope="col"${i && !testuale ? ' class="num"' : ""}>${esc(c)}</th>`).join("")}</tr>
+        </thead>
+        <tbody>${g.righe.map((r) => riga(r, "td")).join("")}</tbody>
+        ${g.totale ? `<tfoot>${riga(g.totale, "td")}</tfoot>` : ""}
+      </table></div>`;
+      return {};
+    }
+  };
+
+  // Immagine originale incorporata (solo immagini dentro la pagina, mai indirizzi esterni)
+  const immagine = {
+    interattivo: false,
+    disegna(plot, g) {
+      if (plot.querySelector("img")) return {};
+      if (!/^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+$/.test(g.src || "")) return {};
+      const img = document.createElement("img");
+      img.className = "g-img";
+      img.src = g.src;
+      img.alt = g.alt || "";
+      if (g.w && g.h) { img.width = g.w; img.height = g.h; }
+      img.decoding = "async";
+      plot.append(img);
+      return {};
+    }
+  };
+
+  // Ciclo di passi disposti in quadrato, in senso orario
+  const ciclo = {
+    interattivo: false,
+    disegna(plot, g) {
+      if (plot.querySelector("svg")) return {};
+      const W = 404, H = 232, BW = 156, BH = 60;
+      const pos = [[16, 14], [232, 14], [232, 158], [16, 158]];
+      let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(g.descrizione || "")}">`;
+      g.passi.forEach((righe, i) => {
+        const [x, y] = pos[i];
+        s += `<rect class="d-box" x="${x}" y="${y}" width="${BW}" height="${BH}" rx="4"></rect>`;
+        s += `<circle class="c-num" cx="${x + 18}" cy="${y + 18}" r="10"></circle><text class="c-num-t" x="${x + 18}" y="${y + 22}" text-anchor="middle">${i + 1}</text>`;
+        s += `<text class="c-t1" x="${x + 36}" y="${y + 23}">${esc(righe[0])}</text>`;
+        if (righe[1]) s += `<text class="c-t2" x="${x + 36}" y="${y + 42}">${esc(righe[1])}</text>`;
+      });
+      const xa = 16 + BW, xb = 232, yt = 14 + BH / 2, yb = 158 + BH / 2, xl = 16 + BW / 2, xr = 232 + BW / 2;
+      s += `<line class="d-line" x1="${xa + 6}" x2="${xb - 9}" y1="${yt}" y2="${yt}"></line>${punta(xb - 2, yt, "destra")}`;
+      s += `<line class="d-line" x1="${xr}" x2="${xr}" y1="${14 + BH + 6}" y2="${158 - 9}"></line>${punta(xr, 158 - 2, "giu")}`;
+      s += `<line class="d-line" x1="${xb - 6}" x2="${xa + 9}" y1="${yb}" y2="${yb}"></line><path class="d-head" d="M${xa + 2},${yb}L${xa + 10},${yb - 4.5}L${xa + 10},${yb + 4.5}Z"></path>`;
+      s += `<line class="d-line" x1="${xl}" x2="${xl}" y1="${158 - 6}" y2="${14 + BH + 9}"></line>${punta(xl, 14 + BH + 2, "su")}`;
+      s += `</svg>`;
+      plot.innerHTML = s;
+      return {};
+    }
+  };
+
+  // Gradini di maturità: blocchi crescenti da sinistra a destra
+  const aCapo = (testo, max) => {
+    const out = [""];
+    String(testo).split(" ").forEach((w) => {
+      const cur = out[out.length - 1];
+      if (cur && (cur + " " + w).length > max) out.push(w); else out[out.length - 1] = cur ? `${cur} ${w}` : w;
+    });
+    return out;
+  };
+  const scala = {
+    interattivo: false,
+    disegna(plot, g) {
+      if (plot.querySelector("svg")) return {};
+      const n = g.gradini.length, W = 444, base = 168, H = 206, bw = 134, gap = 10;
+      let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(g.descrizione || "")}">`;
+      g.gradini.forEach((t, i) => {
+        const h = 62 + i * 38, x = 8 + i * (bw + gap), y = base - h;
+        s += `<rect class="sc-step sc${i + 1}" x="${x}" y="${y}" width="${bw}" height="${h}" rx="4"></rect>`;
+        s += `<text class="c-num-t sc-n" x="${x + 12}" y="${y + 22}">${i + 1}</text>`;
+        aCapo(t, 17).forEach((riga, k) => { s += `<text class="c-t1" x="${x + 12}" y="${y + 42 + k * 16}">${esc(riga)}</text>`; });
+      });
+      s += `<line class="d-line" x1="8" x2="${W - 14}" y1="${base + 14}" y2="${base + 14}"></line>${punta(W - 6, base + 14, "destra")}`;
+      s += `<text class="x-lbl" x="${W - 8}" y="${base + 34}" text-anchor="end">${esc(g.asse || "")}</text>`;
+      s += `</svg>`;
+      plot.innerHTML = s;
+      return {};
+    }
+  };
+
+  // Curve schematiche (senza valori sull'asse verticale), in uno o più pannelli affiancati
+  const schema = {
+    interattivo: false,
+    disegna(plot, g) {
+      const W = Math.max(280, Math.round(plot.clientWidth));
+      const np = g.pannelli.length, affianca = np > 1 && W >= 520, gap = 30;
+      const pw = affianca ? (W - gap * (np - 1)) / np : W;
+      const head = 26, ph = W < 520 ? 140 : 160, foot = g.x.passo ? 46 : 34, left = 10, right = 12;
+      const blocco = head + ph + foot;
+      const H = affianca || np === 1 ? blocco : np * blocco + (np - 1) * 18;
+      const fx = (v) => (g.x.formato === "%" ? `${fmt(v)}%` : fmt(v));
+      let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(g.descrizione || "")}">`;
+      g.pannelli.forEach((p, i) => {
+        const ox = affianca ? i * (pw + gap) : 0, oy = affianca ? 0 : i * (blocco + 18);
+        const x0 = ox + left, x1 = ox + pw - right, y0 = oy + head, base = y0 + ph;
+        const X = (v) => n1(x0 + 4 + (x1 - x0 - 10) * (v - g.x.min) / (g.x.max - g.x.min));
+        const ys = p.punti.map((q) => q[1]);
+        const ymin = Math.min(0, ...ys), ymax = Math.max(...ys);
+        const Y = (v) => n1(base - 6 - (ph - 18) * (v - ymin) / (ymax - ymin || 1));
+        s += `<text class="g-panel-title" x="${n1(ox)}" y="${oy + 14}">${esc(p.titolo)}</text>`;
+        s += `<path class="s-axis" d="M${x0},${y0}V${base}H${x1}"></path>`;
+        s += `<path class="d-head" d="M${x0 - 4},${y0 + 7}L${x0},${y0}L${x0 + 4},${y0 + 7}Z"></path><path class="d-head" d="M${x1 - 7},${base - 4}L${x1},${base}L${x1 - 7},${base + 4}Z"></path>`;
+        if (g.x.passo) {
+          for (let v = g.x.min; v <= g.x.max + 1e-9; v += g.x.passo) s += `<text class="g-tick" x="${X(v)}" y="${base + 17}" text-anchor="middle">${esc(fx(v))}</text>`;
+        }
+        s += `<text class="g-axis-title" x="${n1(x1)}" y="${base + (g.x.passo ? 36 : 20)}" text-anchor="end">${esc(g.x.titolo)}</text>`;
+        s += `<path class="g-line" d="${p.punti.map((q, k) => `${k ? "L" : "M"}${X(q[0])},${Y(q[1])}`).join("")}"></path>`;
+        if (p.evidenzia) {
+          const xe = p.evidenzia.x;
+          let ye = p.punti[0][1];
+          for (let k = 1; k < p.punti.length; k++) {
+            const [xa, ya] = p.punti[k - 1], [xb, yb] = p.punti[k];
+            if ((xe - xa) * (xe - xb) <= 0) { ye = ya + (yb - ya) * (xe - xa) / ((xb - xa) || 1); break; }
+          }
+          s += `<line class="s-hl" x1="${X(xe)}" x2="${X(xe)}" y1="${Y(ye)}" y2="${base}"></line><circle class="g-dot" cx="${X(xe)}" cy="${Y(ye)}" r="5"></circle>`;
+          s += `<text class="g-note" x="${X(xe)}" y="${base + 17}" text-anchor="middle">${esc(p.evidenzia.etichetta)}</text>`;
+        }
+        (p.note || []).forEach((nt) => {
+          s += `<text class="w-note" x="${X(nt.x)}" y="${Y(nt.y)}" text-anchor="${nt.ancora || "middle"}">${esc(nt.testo)}</text>`;
+        });
+      });
+      s += `</svg>`;
+      plot.innerHTML = s;
+      return {};
+    }
+  };
+
+  // Curva di riempimento con fasce di prezzo: il load factor sale verso la partenza e attraversa gli scaglioni
+  const fasce = {
+    tabella: (g) => tabellaSr(g.titolo || "", [g.x.titolo, g.y.titolo], g.punti.map((q) => [q[0], `${fmt(q[1])}%`])),
+    etichetta: (g) => `${g.titolo || ""}: ${g.y.titolo} per ${g.x.titolo.toLowerCase()}. Usa le frecce per scorrere i valori.`,
+    disegna(plot, g, stato) {
+      const W = Math.max(280, Math.round(plot.clientWidth));
+      const H = W < 520 ? 250 : 286;
+      const lbl = (v) => `${fmt(v)}%`;
+      const left = 42, right = W < 520 ? 82 : 96, top = 36, bottom = 48;
+      const iw = W - left - right, ih = H - top - bottom;
+      const X = (v) => n1(left + iw * (g.x.min - v) / (g.x.min - g.x.max));
+      const Y = (v) => n1(top + ih * (1 - (v - g.y.min) / (g.y.max - g.y.min)));
+      const fascia = (lf) => g.fasce.find((f) => lf >= f.da && lf < f.a) || g.fasce[g.fasce.length - 1];
+      let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">`;
+      g.fasce.forEach((f, i) => {
+        const ya = Y(f.a), yb = Y(f.da);
+        if (i % 2) s += `<rect class="f-band" x="${left}" y="${ya}" width="${iw}" height="${n1(yb - ya)}"></rect>`;
+        s += `<text class="f-lbl" x="${left + iw + 10}" y="${n1((ya + yb) / 2 + 4)}">${esc(f.etichetta)}</text>`;
+      });
+      passi(g.y.min, g.y.max, g.y.passo).forEach((t) => {
+        const yy = Math.round(Y(t)) + .5;
+        s += `<line class="g-grid" x1="${left}" x2="${left + iw}" y1="${yy}" y2="${yy}"></line><text class="g-tick" x="${left - 8}" y="${yy + 4}" text-anchor="end">${esc(lbl(t))}</text>`;
+      });
+      g.fasce.slice(1).forEach((f) => { const yy = Math.round(Y(f.da)) + .5; s += `<line class="f-soglia" x1="${left}" x2="${left + iw + 4}" y1="${yy}" y2="${yy}"></line>`; });
+      for (let v = g.x.min; v >= g.x.max; v -= g.x.passo) s += `<text class="g-tick" x="${X(v)}" y="${top + ih + 19}" text-anchor="middle">${v}</text>`;
+      s += `<text class="g-axis-title" x="0" y="13">${esc(g.y.titolo)}</text>`;
+      s += `<text class="g-axis-title" x="${n1(left + iw / 2)}" y="${H - 5}" text-anchor="middle">${esc(g.x.titolo)}</text>`;
+      s += `<line class="g-cross" x1="0" x2="0" y1="${top}" y2="${top + ih}" visibility="hidden"></line>`;
+      s += `<path class="g-line" d="${g.punti.map((q, k) => `${k ? "L" : "M"}${X(q[0])},${Y(q[1])}`).join("")}"></path>`;
+      g.fasce.slice(1).forEach((f) => {
+        for (let k = 1; k < g.punti.length; k++) {
+          const [xa, ya] = g.punti[k - 1], [xb, yb] = g.punti[k];
+          if (ya < f.da && yb >= f.da) {
+            const xc = xa + (xb - xa) * (f.da - ya) / (yb - ya);
+            s += `<circle class="g-dot" cx="${X(xc)}" cy="${Y(f.da)}" r="4.5"></circle>`;
+            break;
+          }
+        }
+      });
+      s += `<circle class="g-dot f-cur" r="4" cx="-20" cy="-20" visibility="hidden"></circle>`;
+      s += `</svg>`;
+      plot.innerHTML = s;
+      const tip = tooltip(plot);
+      const cross = plot.querySelector(".g-cross"), cur = plot.querySelector(".f-cur");
+      const mostra = (i, k = 1) => {
+        stato.i = i;
+        const [d, lf] = g.punti[i];
+        cross.setAttribute("x1", X(d)); cross.setAttribute("x2", X(d)); cross.setAttribute("visibility", "visible");
+        cur.setAttribute("cx", X(d)); cur.setAttribute("cy", Y(lf)); cur.setAttribute("visibility", "visible");
+        tip.show(X(d) / k, Y(lf) / k, `${lbl(Math.round(lf))} · ${fascia(lf).etichetta}`, `${d} ${d === 1 ? "giorno" : "giorni"} alla partenza`);
+      };
+      const nascondi = () => { cross.setAttribute("visibility", "hidden"); cur.setAttribute("visibility", "hidden"); tip.hide(); };
+      const vicino = (px) => {
+        let best = 0, bd = Infinity;
+        g.punti.forEach((q, i) => { const dd = Math.abs(X(q[0]) - px); if (dd < bd) { bd = dd; best = i; } });
+        return best;
+      };
+      return {
+        move(e) { const p = puntatore(plot, e); if (p.x < left - 6 || p.x > left + iw + 6) { nascondi(); return; } mostra(vicino(p.x), p.k); },
+        hide: nascondi,
+        focus() { mostra(stato.i ?? 0); },
+        key(e) {
+          if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+          e.preventDefault();
+          mostra(Math.max(0, Math.min(g.punti.length - 1, (stato.i ?? 0) + (e.key === "ArrowRight" ? 1 : -1))));
+        }
+      };
+    }
+  };
+
+  // Riquadro con testo centrato e a capo automatico: voce = "testo" oppure ["testo", "sottotitolo"]
+  const LH = 16;
+  // A capo bilanciato: stesso numero di righe del semplice a capo, ma righe di lunghezza simile (niente parole orfane)
+  const aCapoBil = (testo, max) => {
+    const base = aCapo(testo, max);
+    if (base.length < 2) return base;
+    for (let m = Math.ceil(String(testo).length / base.length); m < max; m++) {
+      const r = aCapo(testo, m);
+      if (r.length === base.length) return r;
+    }
+    return base;
+  };
+  const righeVoce = (v, bw) => {
+    const [t, sub] = Array.isArray(v) ? v : [v, ""];
+    return { t: aCapoBil(t, Math.max(6, Math.floor((bw - 20) / 6.7))), sub: sub ? aCapoBil(sub, Math.max(6, Math.floor((bw - 20) / 5.9))) : [] };
+  };
+  const altezzaVoce = (r) => 18 + (r.t.length + r.sub.length) * LH;
+  const riquadro = (x, y, w, h, r, cls, rx = 3) => {
+    let s = `<g class="${cls}"><rect x="${n1(x)}" y="${n1(y)}" width="${n1(w)}" height="${n1(h)}" rx="${n1(rx)}"></rect>`;
+    let yy = y + (h - (r.t.length + r.sub.length) * LH) / 2 + 12;
+    r.t.forEach((l) => { s += `<text class="c-t1" x="${n1(x + w / 2)}" y="${n1(yy)}" text-anchor="middle">${esc(l)}</text>`; yy += LH; });
+    r.sub.forEach((l) => { s += `<text class="c-t2" x="${n1(x + w / 2)}" y="${n1(yy)}" text-anchor="middle">${esc(l)}</text>`; yy += LH; });
+    return `${s}</g>`;
+  };
+  const curva = (x1, y1, x2, y2, orizzontale, cls = "d-line") => {
+    const d = orizzontale
+      ? `M${n1(x1)},${n1(y1)}C${n1((x1 + x2) / 2)},${n1(y1)} ${n1((x1 + x2) / 2)},${n1(y2)} ${n1(x2)},${n1(y2)}`
+      : `M${n1(x1)},${n1(y1)}C${n1(x1)},${n1((y1 + y2) / 2)} ${n1(x2)},${n1((y1 + y2) / 2)} ${n1(x2)},${n1(y2)}`;
+    return `<path class="${cls}" d="${d}"></path>`;
+  };
+
+  // Filiera: fonti → analisi → casi d'uso. Largo: tre colonne con linee che convergono e si aprono; stretto: in verticale
+  const filiera = {
+    interattivo: false,
+    disegna(plot, g) {
+      const W = Math.max(280, Math.round(plot.clientWidth));
+      const [C1, C2, C3] = g.colonne;
+      const ev = new Set(C3.evidenzia || []);
+      const cls3 = (j) => (ev.has(j) ? "fl-box fl-hl" : "fl-box");
+      const testa = (x, y, t, ancora = "start") => (t ? `<text class="fl-h" x="${n1(x)}" y="${n1(y)}" text-anchor="${ancora}">${esc(t)}</text>` : "");
+      let s = "", H;
+      if (W >= 540) {
+        const gap = W >= 640 ? 58 : 48, disp = W - 2 * gap;
+        const w = [disp * .28, disp * .3, disp * .42];
+        const x = [0, w[0] + gap, w[0] + w[1] + 2 * gap];
+        const cols = [C1, C2, C3].map((c, i) => c.voci.map((v) => righeVoce(v, w[i])));
+        const hs = cols.map((rs, i) => rs.map((r) => (i === 1 ? Math.max(altezzaVoce(r), 66) : altezzaVoce(r))));
+        const vg = [14, 0, 9];
+        const tot = hs.map((h, i) => h.reduce((a, b) => a + b, 0) + (h.length - 1) * vg[i]);
+        const top = 28, hmax = Math.max(...tot);
+        const pos = hs.map((h, i) => { let y = top + (hmax - tot[i]) / 2; return h.map((hh) => { const y0 = y; y += hh + vg[i]; return y0; }); });
+        [C1, C2, C3].forEach((c, i) => { s += testa(x[i], 12, c.titolo); });
+        cols[0].forEach((r, j) => { s += riquadro(x[0], pos[0][j], w[0], hs[0][j], r, "fl-box"); });
+        s += riquadro(x[1], pos[1][0], w[1], hs[1][0], cols[1][0], "fl-box fl-core");
+        cols[2].forEach((r, j) => { s += riquadro(x[2], pos[2][j], w[2], hs[2][j], r, cls3(j)); });
+        const ym = pos[1][0] + hs[1][0] / 2;
+        cols[0].forEach((r, j) => { s += curva(x[0] + w[0], pos[0][j] + hs[0][j] / 2, x[1] - 8, ym, true); });
+        s += punta(x[1], ym, "destra");
+        cols[2].forEach((r, j) => {
+          const yj = pos[2][j] + hs[2][j] / 2;
+          s += curva(x[1] + w[1], ym, x[2] - 8, yj, true) + punta(x[2], yj, "destra");
+        });
+        H = top + hmax + 2;
+      } else {
+        const g1 = 8, bw = (W - 2 * g1) / 3;
+        const r1 = C1.voci.map((v) => righeVoce(v, bw));
+        const h1 = Math.max(...r1.map(altezzaVoce));
+        const y1 = 22;
+        s += testa(0, 12, C1.titolo);
+        r1.forEach((r, j) => { s += riquadro(j * (bw + g1), y1, bw, h1, r, "fl-box"); });
+        const wm = Math.min(W, 250), xm = (W - wm) / 2;
+        const rm = righeVoce(C2.voci[0], wm), hm = Math.max(altezzaVoce(rm), 54);
+        const ym = y1 + h1 + 42;
+        r1.forEach((r, j) => { s += curva(j * (bw + g1) + bw / 2, y1 + h1, W / 2, ym - 8, false); });
+        s += punta(W / 2, ym, "giu") + riquadro(xm, ym, wm, hm, rm, "fl-box fl-core");
+        const xt = 10, xb = 26, wb = W - xb;
+        const r3 = C3.voci.map((v) => righeVoce(v, wb));
+        const yh = ym + hm + 40;
+        s += testa(xb, yh, C3.titolo);
+        let y = yh + 12;
+        const mids = [];
+        r3.forEach((r, j) => { const h = altezzaVoce(r); s += riquadro(xb, y, wb, h, r, cls3(j)); mids.push(y + h / 2); y += h + 8; });
+        const yGiro = ym + hm + 14;
+        s += `<path class="d-line" d="M${n1(W / 2)},${n1(ym + hm)}V${n1(yGiro)}H${xt}V${n1(mids[mids.length - 1])}"></path>`;
+        mids.forEach((yy) => { s += `<line class="d-line" x1="${xt}" x2="${xb - 8}" y1="${n1(yy)}" y2="${n1(yy)}"></line>${punta(xb, yy, "destra")}`; });
+        H = y - 6;
+      }
+      plot.innerHTML = `<svg viewBox="0 0 ${W} ${n1(H)}" width="${W}" height="${n1(H)}" role="img" aria-label="${esc(g.descrizione || "")}">${s}</svg>`;
+      return {};
+    }
+  };
+
+  // Due metodi di raccomandazione (collaborative e content-based) che insieme danno il filtraggio ibrido
+  const raccomandazione = {
+    interattivo: false,
+    disegna(plot, g) {
+      const W = Math.max(280, Math.round(plot.clientWidth));
+      const largo = W >= 540, gp = largo ? 34 : 30;
+      const pw = largo ? (W - gp) / 2 : W;
+      const L = g.legenda;
+      const testaRec = (x, y, dir) => punta(x, y, dir).replace('class="d-head"', 'class="rc-head"');
+      let s = `<line class="rc-past" x1="0" x2="24" y1="9" y2="9"></line><text class="c-t2" x="31" y="13">${esc(L.passato)}</text>`;
+      const xl = 31 + L.passato.length * 6.3 + 22;
+      s += `<line class="rc-rec" x1="${n1(xl)}" x2="${n1(xl + 18)}" y1="9" y2="9"></line>${testaRec(xl + 26, 9, "destra")}<text class="c-t2" x="${n1(xl + 33)}" y="13">${esc(L.consiglio)}</text>`;
+      const cTop = 70, hc = 150, ph = cTop + hc + 14;
+      const pannello = (p, ox, oy) => {
+        let t = `<rect class="rc-frame" x="${n1(ox + .5)}" y="${n1(oy + .5)}" width="${n1(pw - 1)}" height="${ph - 1}" rx="4"></rect>`;
+        t += `<text class="g-panel-title" x="${n1(ox + 14)}" y="${oy + 24}">${esc(p.titolo)}</text>`;
+        aCapo(p.nota, Math.floor((pw - 28) / 6.3)).slice(0, 2).forEach((riga, k) => { t += `<text class="c-t2" x="${n1(ox + 14)}" y="${oy + 42 + k * 15}">${esc(riga)}</text>`; });
+        // Utenti come cerchi con l'iniziale; articoli come riquadri. Collaborative: articoli al centro, un utente per lato (nessun incrocio)
+        const ur = 15, y0 = oy + cTop;
+        const utente = (nome, cx, cy) => `<g class="rc-user"><circle cx="${n1(cx)}" cy="${n1(cy)}" r="${ur}"></circle><text class="c-t1" x="${n1(cx)}" y="${n1(cy + 4.5)}" text-anchor="middle">${esc(nome)}</text></g>`;
+        if (p.tipo === "collaborativo") {
+          const iw = Math.min(150, pw * .36), ix = ox + (pw - iw) / 2, ih = 30;
+          const ys = [0, 1, 2].map((k) => y0 + k * (hc - ih) / 2), mid = ys.map((y) => y + ih / 2);
+          const xa = ox + 14 + ur, xb = ox + pw - 14 - ur, ya = (mid[0] + mid[1]) / 2, yb = mid[1];
+          [0, 1].forEach((k) => { t += curva(xa + ur, ya, ix, mid[k], true, "rc-past"); });
+          [0, 1, 2].forEach((k) => { t += curva(xb - ur, yb, ix + iw, mid[k], true, "rc-past"); });
+          t += curva(xa + ur, ya, ix - 9, mid[2], true, "rc-rec") + testaRec(ix, mid[2], "destra");
+          p.articoli.forEach((a, k) => { t += riquadro(ix, ys[k], iw, ih, righeVoce(a, iw), k === 2 ? "fl-box rc-target" : "fl-box"); });
+          t += utente(p.utenti[0], xa, ya) + utente(p.utenti[1], xb, yb);
+        } else {
+          const xa = ox + 14 + ur, iw = Math.min(190, pw - 14 - 2 * ur - 48 - 24), ix = ox + pw - 24 - iw, ih = 44;
+          const ys = [0, 1, 2].map((k) => y0 + k * (hc - ih) / 2), mid = ys.map((y) => y + ih / 2), yu = (mid[0] + mid[1]) / 2;
+          t += curva(xa + ur, yu, ix, mid[0], true, "rc-past");
+          t += curva(xa + ur, yu, ix - 9, mid[1], true, "rc-rec") + testaRec(ix, mid[1], "destra");
+          p.articoli.forEach((a, k) => { t += riquadro(ix, ys[k], iw, ih, righeVoce(a, iw), ["fl-box", "fl-box rc-target", "fl-box rc-off"][k]); });
+          t += utente(p.utente, xa, yu);
+          const xs = ix + iw + 5;
+          t += `<path class="rc-sim" d="M${n1(xs)},${n1(mid[0])}H${n1(xs + 6)}V${n1(mid[1])}H${n1(xs)}"></path>`;
+        }
+        return t;
+      };
+      const oy = 28;
+      let fondo;
+      if (largo) {
+        s += pannello(g.pannelli[0], 0, oy) + pannello(g.pannelli[1], pw + gp, oy);
+        s += `<text class="rc-plus" x="${n1(W / 2)}" y="${n1(oy + ph / 2 + 7)}" text-anchor="middle">+</text>`;
+        fondo = oy + ph;
+      } else {
+        s += pannello(g.pannelli[0], 0, oy);
+        s += `<text class="rc-plus" x="${n1(W / 2)}" y="${n1(oy + ph + gp / 2 + 7)}" text-anchor="middle">+</text>`;
+        s += pannello(g.pannelli[1], 0, oy + ph + gp);
+        fondo = oy + 2 * ph + gp;
+      }
+      const hw = Math.min(W, 340), hr = righeVoce(g.ibrido, hw), hh = altezzaVoce(hr), hy = fondo + 34;
+      s += `<line class="d-line" x1="${n1(W / 2)}" x2="${n1(W / 2)}" y1="${n1(fondo + 6)}" y2="${n1(hy - 8)}"></line>${punta(W / 2, hy, "giu")}`;
+      s += riquadro((W - hw) / 2, hy, hw, hh, hr, "fl-box fl-core");
+      const H = hy + hh + 2;
+      plot.innerHTML = `<svg viewBox="0 0 ${W} ${n1(H)}" width="${W}" height="${n1(H)}" role="img" aria-label="${esc(g.descrizione || "")}">${s}</svg>`;
+      return {};
+    }
+  };
+
+  const TIPI_GRAFICO = { linea, dispersione, quote, istogrammi, flusso, wfa, bitmap, crossover, tabella: tabellaDati, immagine, ciclo, scala, schema, fasce, filiera, raccomandazione };
+  const montaGrafici = (root, s) => {
+    root.querySelectorAll("figure[data-grafico]").forEach((fig) => {
+      const g = (s.grafici || {})[fig.getAttribute("data-grafico")];
+      const T = g && TIPI_GRAFICO[g.tipo];
+      if (!T) { fig.remove(); return; }
+      fig.className = `grafico g-${g.tipo}`;
+      fig.textContent = "";
+      const plot = document.createElement("div");
+      plot.className = "g-plot";
+      const interattivo = T.interattivo !== false;
+      if (interattivo) {
+        plot.tabIndex = 0;
+        plot.setAttribute("role", "group");
+        plot.setAttribute("aria-label", T.etichetta(g));
+      }
+      fig.append(plot);
+      const stato = { i: null, fisso: null, evidenzia: () => {} };
+      let api = {};
+      let ultimaW = -1;
+      const disegna = () => {
+        const w = Math.round(plot.clientWidth);
+        if (!w || Math.abs(w - ultimaW) < 1) return;
+        ultimaW = w;
+        api = T.disegna(plot, g, stato) || {};
+      };
+      if (T.extra) T.extra(fig, g, stato, disegna).forEach((el) => fig.append(el));
+      if (g.titolo) {
+        const cap = document.createElement("figcaption");
+        const b = document.createElement("b");
+        b.textContent = g.titolo;
+        cap.append(b);
+        if (g.sottotitolo) cap.append(document.createTextNode(` · ${g.sottotitolo}`));
+        fig.append(cap);
+      }
+      if (T.tabella) fig.insertAdjacentHTML("beforeend", T.tabella(g));
+      if (interattivo) {
+        plot.addEventListener("pointermove", (e) => api.move && api.move(e));
+        plot.addEventListener("pointerdown", (e) => api.move && api.move(e));
+        plot.addEventListener("pointerleave", () => api.hide && api.hide());
+        plot.addEventListener("focus", () => api.focus && api.focus());
+        plot.addEventListener("blur", () => api.hide && api.hide());
+        plot.addEventListener("keydown", (e) => api.key && api.key(e));
+      }
+      disegna();
+      if ("ResizeObserver" in window) {
+        const ro = new ResizeObserver(() => {
+          if (!plot.isConnected) { ro.disconnect(); return; }
+          requestAnimationFrame(disegna);
+        });
+        ro.observe(plot);
+      } else {
+        window.addEventListener("resize", disegna);
+      }
+    });
+  };
+
+  // Menu a tendina
+  const pnlArg = $("#pnl-argomenti");
+  const pnlStim = $("#pnl-stimoli");
+  const premuto = (cond) => `aria-pressed="${Boolean(cond)}"`;
+  const renderMenus = () => {
+    const argList = [...argomenti.entries()].sort((a, b) => norm(a[0]).localeCompare(norm(b[0])));
+    pnlArg.innerHTML =
+      `<button type="button" class="dd-item" data-tutte ${premuto(sel && sel.tipo === "tutte")}><span class="t">Tutte le schede</span></button>` +
+      argList.map(([a, info]) =>
+        `<button type="button" class="dd-group" data-arg="${esc(a)}" ${premuto(sel && sel.tipo === "argomento" && sel.argomento === a && !sel.tema)}><span>${esc(a)}</span></button>` +
+        [...info.temi.entries()]
+          .sort((x, y) => y[1] - x[1] || norm(x[0]).localeCompare(norm(y[0])))
+          .map(([t]) => `<button type="button" class="dd-item dd-sub" data-arg="${esc(a)}" data-tema="${esc(t)}" ${premuto(sel && sel.tipo === "argomento" && sel.argomento === a && sel.tema === t)}><span class="t">${esc(t)}</span></button>`)
+          .join("")
+      ).join("");
+
+    const groups = new Map();
+    [...stimoli.values()].forEach((k) => {
+      const t = k.tipo || "Altro";
+      if (!groups.has(t)) groups.set(t, []);
+      groups.get(t).push(k);
+    });
+    const ordered = [...groups.entries()].sort((a, b) => tipoIndex(a[0]) - tipoIndex(b[0]));
+    pnlStim.innerHTML =
+      `<button type="button" class="dd-item" data-stim-tutti ${premuto(sel && sel.tipo === "stimoli")}><span class="t">Tutti gli insight</span></button>` +
+      ordered.map(([t, items]) =>
+        `<button type="button" class="dd-group" data-tipo="${esc(t)}" ${premuto(sel && sel.tipo === "gruppo" && sel.gruppo === t)}><span>${esc(tipoLabel(t))}</span></button>` +
+        items.sort(bySource).map((k) => {
+          const sub = k.autore ? k.titolo : k.nota;
+          return `<button type="button" class="dd-item" data-stim="${esc(k.key)}" ${premuto(sel && sel.tipo === "stimolo" && sel.chiave === k.key)}>
+            <span class="t">${esc(k.autore || k.titolo)}</span><span class="n">${esc(k.anno || "")}</span>
+            ${sub ? `<span class="sub">${esc(sub)}</span>` : ""}
+          </button>`;
+        }).join("")
+      ).join("");
+
+    $("#btn-argomenti").classList.toggle("on", Boolean(sel && (sel.tipo === "tutte" || sel.tipo === "argomento")));
+    $("#btn-stimoli").classList.toggle("on", Boolean(sel && (sel.tipo === "stimoli" || sel.tipo === "stimolo" || sel.tipo === "gruppo")));
+  };
+
+  const closeAll = (except) => {
+    document.querySelectorAll(".dd").forEach((dd) => {
+      if (dd === except) return;
+      dd.querySelector(".dd-btn").setAttribute("aria-expanded", "false");
+      dd.querySelector(".dd-panel").hidden = true;
+    });
+  };
+  document.querySelectorAll(".dd").forEach((dd) => {
+    const btn = dd.querySelector(".dd-btn");
+    const pnl = dd.querySelector(".dd-panel");
+    btn.addEventListener("click", () => {
+      const open = btn.getAttribute("aria-expanded") !== "true";
+      closeAll(dd);
+      btn.setAttribute("aria-expanded", String(open));
+      pnl.hidden = !open;
+      if (open) {
+        const first = pnl.querySelector('[aria-pressed="true"]') || pnl.querySelector("button");
+        if (first) first.focus({ preventScroll: true });
+      }
+    });
+    pnl.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+      const items = [...pnl.querySelectorAll("button")];
+      const i = items.indexOf(document.activeElement);
+      const next = items[(i + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length];
+      if (next) next.focus();
+      e.preventDefault();
+    });
+  });
+
+  // Navigazione
+  const scrollToResults = () => {
+    const y = vista.getBoundingClientRect().top + window.scrollY - (toolbar.offsetHeight + 8);
+    if (window.scrollY > y) window.scrollTo({ top: Math.max(0, y) });
+  };
+  // La navigazione resta tutta dentro la pagina: non cambia l'indirizzo, così funziona anche nei riquadri di Claude e nel file scaricato.
+  const mostraScheda = (s) => {
+    if (!current) listScroll = window.scrollY;
+    current = s.id;
+    renderScheda(s);
+    scrollToResults();
+  };
+  const apri = (id) => { if (byId[id]) mostraScheda(byId[id]); };
+  const seleziona = (nuova) => {
+    sel = nuova;
+    renderMenus();
+    current = null;
+    const found = sel ? filtra() : [];
+    // Una sola scheda: si apre subito l'articolo, senza passare dall'elenco
+    if (found.length === 1) { mostraScheda(found[0]); return; }
+    renderList();
+    if (sel) scrollToResults();
+  };
+  const indietro = () => {
+    if (sel && filtra().length > 1) {
+      current = null;
+      renderList();
+      window.scrollTo({ top: listScroll });
+    } else {
+      seleziona(null);
+    }
+  };
+  // Un indirizzo con #id apre direttamente la scheda (utile nel file scaricato); la pagina non lo modifica mai.
+  const daIndirizzo = () => {
+    let id = "";
+    try { id = decodeURIComponent(String(location.hash || "").replace(/^#/, "")); } catch (err) { id = ""; }
+    if (id && byId[id] && current !== id) mostraScheda(byId[id]);
+  };
+  window.addEventListener("hashchange", daIndirizzo);
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".dd")) closeAll();
+    const ap = e.target.closest("[data-apri]");
+    if (ap && !e.target.closest("a[href]")) {
+      // Chi sta selezionando del testo nell'anteprima non vuole aprire la scheda
+      const sl = window.getSelection ? window.getSelection() : null;
+      const staSelezionando = sl && !sl.isCollapsed && sl.anchorNode && ap.contains(sl.anchorNode);
+      if (e.target.closest("button") || !staSelezionando) apri(ap.getAttribute("data-apri"));
+      return;
+    }
+    const t = e.target.closest("[data-tutte],[data-arg],[data-stim],[data-stim-tutti],[data-tipo],[data-chiudi],[data-back]");
+    if (!t) return;
+    if (t.hasAttribute("data-back")) indietro();
+    else if (t.hasAttribute("data-chiudi")) seleziona(null);
+    else if (t.hasAttribute("data-tutte")) seleziona({ tipo: "tutte" });
+    else if (t.hasAttribute("data-tema")) seleziona({ tipo: "argomento", argomento: t.dataset.arg, tema: t.dataset.tema });
+    else if (t.hasAttribute("data-arg")) seleziona({ tipo: "argomento", argomento: t.dataset.arg, tema: null });
+    else if (t.hasAttribute("data-stim-tutti")) seleziona({ tipo: "stimoli" });
+    else if (t.hasAttribute("data-stim")) seleziona({ tipo: "stimolo", chiave: t.dataset.stim });
+    else if (t.hasAttribute("data-tipo")) seleziona({ tipo: "gruppo", gruppo: t.dataset.tipo });
+    closeAll();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      const open = document.querySelector('.dd-btn[aria-expanded="true"]');
+      if (open) { closeAll(); open.focus(); }
+    }
+  });
+
+  renderMenus();
+  renderList();
+  daIndirizzo();
+
+  // File HTML scaricabile (solo dentro Claude; la copia offline non ne ha bisogno)
+  const toastEl = $("#toast");
+  let toastTimer = 0;
+  const toast = (msg) => {
+    toastEl.textContent = msg;
+    toastEl.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { toastEl.hidden = true; }, 3400);
+  };
+  const fileHtml = () => [
+    "<!doctype html>",
+    '<html lang="it">',
+    "<head>",
+    '<meta charset="utf-8">',
+    '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">',
+    pristine.title,
+    pristine.fonts,
+    pristine.style,
+    "</head>",
+    "<body>",
+    pristine.root,
+    pristine.data,
+    pristine.app,
+    "</body>",
+    "</html>",
+    ""
+  ].join("\n");
+
+  const btnDl = $("#scarica");
+  const piede = $("#piede");
+  if (window.claude && typeof window.claude.use === "function") {
+    window.claude.use("downloads").then((dl) => {
+      if (!dl) return;
+      piede.hidden = false;
+      btnDl.addEventListener("click", async () => {
+        btnDl.disabled = true;
+        try {
+          const res = await dl.save({ filename: `pensatoio-${archivio.aggiornato || "copia"}.html`, data: fileHtml() });
+          if (res && res.status === "saved") toast("File pronto.");
+        } catch (err) {
+          const code = err && err.code;
+          if (code === "declined") toast("Download annullato.");
+          else if (code === "rate_limited") toast("C’è già una richiesta di download aperta. Confermala o riprova tra poco.");
+          else if (["unavailable", "not_granted", "capability_disabled", "capability_removed", "extension_not_enabled"].includes(code)) {
+            piede.hidden = true;
+            toast("Il download non è disponibile in questa vista.");
+          } else toast("Non sono riuscito a preparare il file. Riprova.");
+        } finally {
+          btnDl.disabled = false;
+        }
+      });
+    }, () => {});
+  }
+})();
+</script>
