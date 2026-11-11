@@ -92,6 +92,26 @@ def sito(pagina):
     return documento
 
 
+def versione_claude(pagina):
+    """Documento completo per la pagina privata su Claude: font da Google, pulsante per scaricare il file."""
+    i = pagina.index('<div id="pensatoio">')
+    testa, corpo = pagina[:i].strip(), pagina[i:].rstrip()
+    righe = [
+        "<!DOCTYPE html>",
+        '<html lang="it">',
+        "<head>",
+        '<meta charset="utf-8">',
+        '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">',
+        testa,
+        "</head>",
+        "<body>",
+        corpo,
+        "</body>",
+        "</html>",
+    ]
+    return "\n".join(righe) + "\n"
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--claude", type=pathlib.Path, help="scrive anche la versione per la pagina privata su Claude")
@@ -101,8 +121,10 @@ def main():
     SITO.write_text(documento, encoding="utf-8")
     print(f"index.html: {len(documento.encode('utf-8')) / 1024:.0f} KB, {len(archivio['schede'])} schede")
     if args.claude:
-        args.claude.write_text(pagina, encoding="utf-8")
-        print(f"{args.claude}: {len(pagina.encode('utf-8')) / 1024:.0f} KB")
+        claude = versione_claude(pagina)
+        args.claude.parent.mkdir(parents=True, exist_ok=True)
+        args.claude.write_text(claude, encoding="utf-8")
+        print(f"{args.claude}: {len(claude.encode('utf-8')) / 1024:.0f} KB")
 
 
 if __name__ == "__main__":
