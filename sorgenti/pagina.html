@@ -135,9 +135,10 @@ button { font: inherit; color: inherit; }
   font-family: var(--font-display);
   font-stretch: 125%;
   font-weight: 800;
-  /* La parola in Archivo largo misura circa 7,64 volte la dimensione del carattere: così sta sempre dentro i margini, anche sul telefono */
-  font-size: min(136px, 11.6vw);
-  font-size: min(136px, calc((100vw - max(16px, env(safe-area-inset-left, 0px)) - max(16px, env(safe-area-inset-right, 0px))) / 7.9));
+  /* Nome e cognome su due righe: in Archivo largo la riga più lunga (GIORDANO) misura circa 7,2 volte la dimensione del carattere,
+     così il nome sta sempre dentro i margini, anche sul telefono */
+  font-size: min(124px, 12vw);
+  font-size: min(124px, calc((100vw - max(16px, env(safe-area-inset-left, 0px)) - max(16px, env(safe-area-inset-right, 0px))) / 7.5));
   line-height: .88;
   letter-spacing: .005em;
   text-transform: uppercase;
@@ -796,7 +797,7 @@ button { font: inherit; color: inherit; }
 <div id="pensatoio">
   <header class="masthead">
     <div class="wrap">
-      <h1 class="wordmark">Pensatoio</h1>
+      <h1 class="wordmark"><span>Giordano</span> <span>Margotti</span></h1>
       <p class="motto">Think slow, grow wise.</p>
     </div>
   </header>

@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Pensatoio · Giordano Margotti</title>
+<title>Giordano Margotti · Pensatoio</title>
 <meta name="description" content="Think slow, grow wise. Articoli e concetti di Giordano Margotti, ordinati per topic e insight.">
-<meta property="og:title" content="Pensatoio · Giordano Margotti">
+<meta property="og:title" content="Giordano Margotti · Pensatoio">
 <meta property="og:description" content="Think slow, grow wise. Articoli e concetti di Giordano Margotti, ordinati per topic e insight.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">
@@ -152,9 +152,10 @@ button { font: inherit; color: inherit; }
   font-family: var(--font-display);
   font-stretch: 125%;
   font-weight: 800;
-  /* La parola in Archivo largo misura circa 7,64 volte la dimensione del carattere: così sta sempre dentro i margini, anche sul telefono */
-  font-size: min(136px, 11.6vw);
-  font-size: min(136px, calc((100vw - max(16px, env(safe-area-inset-left, 0px)) - max(16px, env(safe-area-inset-right, 0px))) / 7.9));
+  /* Nome e cognome su due righe: in Archivo largo la riga più lunga (GIORDANO) misura circa 7,2 volte la dimensione del carattere,
+     così il nome sta sempre dentro i margini, anche sul telefono */
+  font-size: min(124px, 12vw);
+  font-size: min(124px, calc((100vw - max(16px, env(safe-area-inset-left, 0px)) - max(16px, env(safe-area-inset-right, 0px))) / 7.5));
   line-height: .88;
   letter-spacing: .005em;
   text-transform: uppercase;
@@ -814,7 +815,7 @@ button { font: inherit; color: inherit; }
 <div id="pensatoio">
   <header class="masthead">
     <div class="wrap">
-      <h1 class="wordmark">Pensatoio</h1>
+      <h1 class="wordmark"><span>Giordano</span> <span>Margotti</span></h1>
       <p class="motto">Think slow, grow wise.</p>
     </div>
   </header>

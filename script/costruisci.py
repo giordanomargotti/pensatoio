@@ -17,7 +17,7 @@ MODELLO = RADICE / "sorgenti" / "pagina.html"
 ARCHIVIO = RADICE / "sorgenti" / "archivio.json"
 SITO = RADICE / "index.html"
 
-TITOLO = "Pensatoio · Giordano Margotti"
+TITOLO = "Giordano Margotti · Pensatoio"
 DESCRIZIONE = "Think slow, grow wise. Articoli e concetti di Giordano Margotti, ordinati per topic e insight."
 ICONA = ("data:image/svg+xml,"
          "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231f43a3'/%3E"
